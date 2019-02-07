@@ -1,20 +1,25 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.model.Resume;
+
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+    private Resume[] storage = new Resume[10000];
     private int numElems = 0;
 
-    void clear() {
+    public void clear() {
         for (int i = 0; i < numElems; i++) {
             storage[i] = null;
         }
         numElems = 0;
     }
+    public void update(Resume r){
 
-    void save(Resume r) {
+    }
+
+    public void save(Resume r) {
         int i;
         if (numElems == 0) {
             storage[numElems++] = r;
@@ -30,7 +35,7 @@ public class ArrayStorage {
         }
     }
 
-    Resume get(String uuid) {
+    public Resume get(String uuid) {
         for (int i = 0; i < numElems; i++) {
             if ((storage[i].toString()).equals(uuid)) {
                 return storage[i];
@@ -39,7 +44,7 @@ public class ArrayStorage {
         return null;
     }
 
-    void delete(String uuid) {
+    public void delete(String uuid) {
         for (int i = 0; i < numElems; i++) {
             if ((storage[i].toString()).equals(uuid)) {
                 for (int j = i; j < numElems; j++) {
@@ -49,12 +54,13 @@ public class ArrayStorage {
                 return;
             }
         }
+        System.out.println("Резюме "+uuid+" отсутствует в хранилище данных.");
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
+    public Resume[] getAll() {
         Resume[] resumes = new Resume[numElems];
         for (int i = 0; i < numElems; i++) {
             resumes[i] = storage[i];
@@ -62,7 +68,7 @@ public class ArrayStorage {
         return resumes;
     }
 
-    int size() {
+    public int size() {
         return numElems;
     }
 }
