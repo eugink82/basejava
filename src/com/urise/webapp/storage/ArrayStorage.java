@@ -27,13 +27,14 @@ public class ArrayStorage {
 
     public void save(Resume resume) {
         String uuid = resume.getUuid();
+        int index = findIndex(uuid);
         if (numElems >= storage.length) {
             System.out.println("Хранилище заполнено, запись новых резюме невозможна");
         }
-        int index = findIndex(uuid);
-        if (index == -1 && numElems < storage.length) {
+        else if (index == -1) {
             storage[numElems++] = resume;
-        } else {
+        }
+        else {
             System.out.println("Резюме " + uuid + " уже есть в хранилище в хранилище данных.");
         }
     }
@@ -64,9 +65,6 @@ public class ArrayStorage {
      */
     public Resume[] getAll() {
         Resume[] resumes = new Resume[numElems];
-//        for (int i = 0; i < numElems; i++) {
-//            resumes[i] = storage[i];
-//        }
         System.arraycopy(storage, 0, resumes, 0, resumes.length);
         return resumes;
     }
