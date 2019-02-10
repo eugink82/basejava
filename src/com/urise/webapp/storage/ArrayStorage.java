@@ -1,7 +1,7 @@
 package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
-
+import java.util.*;
 /**
  * Array based storage for Resumes
  */
@@ -10,9 +10,7 @@ public class ArrayStorage {
     private int numElems = 0;
 
     public void clear() {
-        for (int i = 0; i < numElems; i++) {
-            storage[i] = null;
-        }
+        Arrays.fill(storage,0,numElems,null);
         numElems = 0;
     }
 
