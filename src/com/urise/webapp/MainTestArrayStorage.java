@@ -1,8 +1,8 @@
 package com.urise.webapp;
 
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.ArrayStorage;
-import com.urise.webapp.storage.Storage;
+import com.urise.webapp.storage.*;
+
 
 /**
  * Test for your com.urise.webapp.storage.ArrayStorage implementation
@@ -26,6 +26,7 @@ public class MainTestArrayStorage {
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+      //  System.out.println(""+ Arrays.binarySearch(ARRAY_STORAGE.storage,0,ARRAY_STORAGE.size(),r2));
 
         printAll();
         ARRAY_STORAGE.delete(r1.getUuid());

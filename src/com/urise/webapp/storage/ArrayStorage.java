@@ -5,10 +5,7 @@ import java.util.*;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage implements Storage{
-    private static final int STORAGE_LIMIT = 10_000;
-    private Resume[] storage = new Resume[STORAGE_LIMIT];
-    private int numElems = 0;
+public class ArrayStorage extends AbstractArrayStorage {
 
     public void clear() {
         Arrays.fill(storage,0,numElems,null);
@@ -27,7 +24,7 @@ public class ArrayStorage implements Storage{
     public void save(Resume resume) {
         String uuid = resume.getUuid();
         int index = findIndex(uuid);
-        if (numElems >= storage.length) {
+        if (numElems >= STORAGE_LIMIT) {
             System.out.println("Хранилище заполнено, запись новых резюме невозможна");
         }
         else if (index == -1) {
@@ -38,15 +35,7 @@ public class ArrayStorage implements Storage{
         }
     }
 
-    public Resume get(String uuid) {
-        int index = findIndex(uuid);
-        if (index >= 0) {
-            return storage[index];
-        } else {
-            System.out.println("Резюме " + uuid + " не возможно получить, его нет в хранилище в хранилище данных.");
-            return null;
-        }
-    }
+
 
     public void delete(String uuid) {
         int index = findIndex(uuid);
@@ -68,11 +57,7 @@ public class ArrayStorage implements Storage{
         return resumes;
     }
 
-    public int size() {
-        return numElems;
-    }
-
-    private int findIndex(String uuid) {
+    protected int findIndex(String uuid) {
 
         for (int i = 0; i < numElems; i++) {
             if ((storage[i].getUuid()).equals(uuid)) {
