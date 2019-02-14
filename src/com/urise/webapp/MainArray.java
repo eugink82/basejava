@@ -19,16 +19,20 @@ public class MainArray {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Resume r;
         while (true) {
-            System.out.print("Введите одну из команд - (list | size | update uuid newUuid | save uuid | delete uuid | get uuid | clear | exit): ");
+            System.out.print("Введите одну из команд - (list | size | update uuid | save uuid | delete uuid | get uuid | clear | exit): ");
             String[] params = reader.readLine().trim().toLowerCase().split(" ");
-            if (!params[0].equals("update") && (params.length < 1 || params.length > 2)) {
+            if (params.length < 1 || params.length > 2) {
                 System.out.println("Неверная команда.");
                 continue;
             }
-            else if(params[0].equals("update") && params.length!=3){
-                System.out.println("Неверная команда.У команды update 3 параметра.");
-                continue;
-            }
+//            if (!params[0].equals("update") && (params.length < 1 || params.length > 2)) {
+//                System.out.println("Неверная команда.");
+//                continue;
+//            }
+//            else if(params[0].equals("update") && params.length!=3){
+//                System.out.println("Неверная команда.У команды update 3 параметра.");
+//                continue;
+//            }
 
             String uuid = null;
             String newUuid=null;

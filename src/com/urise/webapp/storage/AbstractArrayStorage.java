@@ -2,6 +2,8 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.Arrays;
+
 /**
  * Array based storage for Resumes
  */
@@ -15,6 +17,11 @@ public abstract class AbstractArrayStorage implements Storage{
         return numElems;
     }
 
+    public void clear() {
+        Arrays.fill(storage,0,numElems,null);
+        numElems = 0;
+    }
+
     public Resume get(String uuid) {
         int index = findIndex(uuid);
         if (index >= 0) {
@@ -23,6 +30,15 @@ public abstract class AbstractArrayStorage implements Storage{
             System.out.println("Резюме " + uuid + " не возможно получить, его нет в хранилище в хранилище данных.");
             return null;
         }
+    }
+
+    /**
+     * @return array, contains only Resumes in storage (without null)
+     */
+    public Resume[] getAll() {
+        Resume[] resumes = new Resume[numElems];
+        System.arraycopy(storage, 0, resumes, 0, resumes.length);
+        return resumes;
     }
 
     protected abstract int findIndex(String uuid);

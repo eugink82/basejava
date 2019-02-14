@@ -1,16 +1,10 @@
 package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
-import java.util.*;
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage extends AbstractArrayStorage {
-
-    public void clear() {
-        Arrays.fill(storage,0,numElems,null);
-        numElems = 0;
-    }
 
     public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
@@ -35,8 +29,6 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
     }
 
-
-
     public void delete(String uuid) {
         int index = findIndex(uuid);
         if (index >= 0) {
@@ -46,15 +38,6 @@ public class ArrayStorage extends AbstractArrayStorage {
         } else {
             System.out.println("Резюме " + uuid + " не удалось удалить, так как оно отсутствует в хранилище данных.");
         }
-    }
-
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
-    public Resume[] getAll() {
-        Resume[] resumes = new Resume[numElems];
-        System.arraycopy(storage, 0, resumes, 0, resumes.length);
-        return resumes;
     }
 
     protected int findIndex(String uuid) {
