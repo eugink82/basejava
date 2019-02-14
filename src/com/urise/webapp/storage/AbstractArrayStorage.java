@@ -12,6 +12,7 @@ public abstract class AbstractArrayStorage implements Storage{
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int numElems = 0;
+    protected int index;
 
     public int size() {
         return numElems;
@@ -20,6 +21,29 @@ public abstract class AbstractArrayStorage implements Storage{
     public void clear() {
         Arrays.fill(storage,0,numElems,null);
         numElems = 0;
+    }
+
+    public void update(Resume resume) {
+        int index = findIndex(resume.getUuid());
+        if (index >= 0) {
+            storage[index] = resume;
+        } else {
+            System.out.println("Резюме " + resume.getUuid() + " невозможно обновить, оно отсутствует в хранилище данных.");
+        }
+    }
+
+    public void save(Resume resume) {
+        String uuid = resume.getUuid();
+        index = findIndex(uuid);
+        if (numElems >= STORAGE_LIMIT) {
+            System.out.println("Хранилище заполнено, запись новых резюме невозможна");
+        }
+        else if (index <0) {
+            saveElemToStorage(resume);
+        }
+        else {
+            System.out.println("Резюме " + uuid + " уже есть в хранилище в хранилище данных.");
+        }
     }
 
     public Resume get(String uuid) {
@@ -32,7 +56,16 @@ public abstract class AbstractArrayStorage implements Storage{
         }
     }
 
-    /**
+    public void delete(String uuid) {
+        int index = findIndex(uuid);
+        if (index >= 0) {
+            deleteElemFromStorage(index);
+        } else {
+            System.out.println("Резюме " + uuid + " не удалось удалить, так как оно отсутствует в хранилище данных.");
+        }
+    }
+
+     /**
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
@@ -42,4 +75,6 @@ public abstract class AbstractArrayStorage implements Storage{
     }
 
     protected abstract int findIndex(String uuid);
+    protected abstract void saveElemToStorage(Resume resume);
+    protected abstract void deleteElemFromStorage(int index);
 }
