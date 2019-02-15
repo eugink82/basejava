@@ -42,6 +42,7 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("Хранилище заполнено, запись новых резюме невозможна");
         } else if (index < 0) {
             saveElemToStorage(resume, index);
+            numElems++;
         } else {
             System.out.println("Резюме " + uuid + " уже есть в хранилище в хранилище данных.");
         }
@@ -63,6 +64,8 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = findIndex(uuid);
         if (index >= 0) {
             deleteElemFromStorage(index);
+            storage[numElems - 1] = null;
+            numElems--;
         } else {
             System.out.println("Резюме " + uuid + " не удалось удалить, так как оно отсутствует в хранилище данных.");
         }
@@ -84,7 +87,4 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract void deleteElemFromStorage(int index);
 
-    protected abstract void incrementSizeStorage();
-
-    protected abstract void decrementSizeStorage();
 }

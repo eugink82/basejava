@@ -21,24 +21,11 @@ public class ArrayStorage extends AbstractArrayStorage {
     @Override
     protected void saveElemToStorage(Resume resume, int index) {
         storage[numElems] = resume;
-        incrementSizeStorage();
-        ;
     }
 
     @Override
     protected void deleteElemFromStorage(int index) {
         storage[index] = storage[numElems - 1];
-        storage[numElems - 1] = null;
-        decrementSizeStorage();
     }
 
-    @Override
-    protected void incrementSizeStorage() {
-        numElems++;
-    }
-
-    @Override
-    protected void decrementSizeStorage() {
-        numElems--;
-    }
 }
