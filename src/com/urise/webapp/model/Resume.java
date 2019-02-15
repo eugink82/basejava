@@ -3,10 +3,19 @@ package com.urise.webapp.model;
 /**
  * Initial resume class
  */
-public class Resume implements Comparable<Resume>{
+public class Resume implements Comparable<Resume> {
 
     // Unique identifier
     private String uuid;
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -21,14 +30,6 @@ public class Resume implements Comparable<Resume>{
     @Override
     public int hashCode() {
         return uuid.hashCode();
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 
     @Override
