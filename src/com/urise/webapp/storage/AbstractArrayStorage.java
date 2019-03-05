@@ -10,7 +10,7 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10_000;
 
     public Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -28,13 +28,16 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     @Override
-    public void update(Resume resume) {
-        int index = findIndex(resume.getUuid());
-        if (index >= 0) {
-            storage[index] = resume;
-        } else {
-           throw new NotExistStorageException(resume.getUuid());
-        }
+//    public void update(Resume resume) {
+//        int index = findIndex(resume.getUuid());
+//        if (index >= 0) {
+//            storage[index] = resume;
+//        } else {
+//           throw new NotExistStorageException(resume.getUuid());
+//        }
+//    }
+    public void updateResume(Resume resume, int index) {
+        storage[index] = resume;
     }
 
     @Override
@@ -51,14 +54,22 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
+
+//    @Override
+//    public Resume get(String uuid) {
+//        int index = findIndex(uuid);
+//        if (index >= 0) {
+//            return storage[index];
+//        } else {
+//            throw new NotExistStorageException(uuid);
+//        }
+//      //  int index=isExistsElement(uuid);
+//     //   return storage[index];
+//    }
+
     @Override
-    public Resume get(String uuid) {
-        int index = findIndex(uuid);
-        if (index >= 0) {
-            return storage[index];
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
+    public Resume getResume(int index) {
+        return storage[index];
     }
 
     @Override
