@@ -1,7 +1,5 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.ExistStorageException;
-import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
@@ -28,44 +26,18 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-//    public void update(Resume resume) {
-//        int index = findIndex(resume.getUuid());
-//        if (index >= 0) {
-//            storage[index] = resume;
-//        } else {
-//           throw new NotExistStorageException(resume.getUuid());
-//        }
-//    }
     public void updateResume(Resume resume, int index) {
         storage[index] = resume;
     }
 
     @Override
-    public void save(Resume resume) {
-        String uuid = resume.getUuid();
-        int index = findIndex(uuid);
-        if (numElems >= STORAGE_LIMIT) {
+    public void saveResume(Resume resume, int index){
+        if (numElems == STORAGE_LIMIT) {
             throw new StorageException("Хранилище заполнено, запись новых резюме невозможна", resume.getUuid());
-        } else if (index < 0) {
-            saveElemToStorage(resume, index);
-            numElems++;
-        } else {
-            throw new ExistStorageException(resume.getUuid());
         }
+        saveElemToStorage(resume, index);
+        numElems++;
     }
-
-
-//    @Override
-//    public Resume get(String uuid) {
-//        int index = findIndex(uuid);
-//        if (index >= 0) {
-//            return storage[index];
-//        } else {
-//            throw new NotExistStorageException(uuid);
-//        }
-//      //  int index=isExistsElement(uuid);
-//     //   return storage[index];
-//    }
 
     @Override
     public Resume getResume(int index) {
@@ -73,15 +45,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void delete(String uuid) {
-        int index = findIndex(uuid);
-        if (index >= 0) {
+    public void deleteResume(int index) {
             deleteElemFromStorage(index);
             storage[numElems - 1] = null;
             numElems--;
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
     }
 
     /**
