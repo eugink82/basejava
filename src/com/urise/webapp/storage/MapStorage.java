@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
 
-    Map<String, Resume> mapStorage = new HashMap<>();
+    Map<String, Resume> mapStorage = new HashMap<String, Resume>();
 
     @Override
     public void clear() {
@@ -25,18 +25,23 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object findIndex(String uuid) {
-        for (Resume resume : mapStorage.values()) {
-            if (uuid.equals(resume.getUuid())) {
-                return 1;
+    protected Object getSearchKey(String uuid) {
+//        for (Resume resume : mapStorage.values()) {
+//            if (uuid.equals(resume.getUuid())) {
+//                return uuid;
+//            }
+//        }
+        for(String key: mapStorage.keySet()){
+            if(uuid.equals(key)){
+                return key;
             }
         }
-        return -1;
+        return null;
     }
 
     @Override
     protected Resume getResume(Object uuid) {
-        return mapStorage.get(uuid);
+        return mapStorage.get((String)uuid);
     }
 
     @Override

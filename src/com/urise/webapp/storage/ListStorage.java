@@ -31,7 +31,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public void deleteResume(Object index) {
-        storage.remove(index);
+        storage.remove((int)index);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ListStorage extends AbstractStorage {
         return storage.size();
     }
 
-    public Object findIndex(String uuid) {
+    public Object getSearchKey(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             if (uuid.equals(storage.get(i).getUuid())) {
                 return i;

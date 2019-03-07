@@ -7,13 +7,7 @@ import com.urise.webapp.model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     public Resume get(String uuid) {
-//        int index = findIndex(uuid);
-//        if (index >= 0) {
-//            return getResume(index);
-//        } else {
-//            throw new NotExistStorageException(uuid);
-//        }
-        Object searchKey = findIndex(uuid);
+        Object searchKey = getSearchKey(uuid);
         if (!isExists(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
@@ -21,13 +15,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public void update(Resume resume) {
-//        int index = findIndex(resume.getUuid());
-//        if (index >= 0) {
-//            updateResume(resume, index);
-//        } else {
-//            throw new NotExistStorageException(resume.getUuid());
-//        }
-        Object searchKey = findIndex(resume.getUuid());
+        Object searchKey = getSearchKey(resume.getUuid());
         if (!isExists(searchKey)) {
             throw new NotExistStorageException(resume.getUuid());
         }
@@ -35,14 +23,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public void save(Resume resume) {
-//        String uuid = resume.getUuid();
-//        int index = findIndex(uuid);
-//        if (index < 0) {
-//            saveResume(resume,index);
-//        } else {
-//            throw new ExistStorageException(resume.getUuid());
-//        }
-        Object searchKey = findIndex(resume.getUuid());
+        Object searchKey = getSearchKey(resume.getUuid());
         if (isExists(searchKey)) {
             throw new ExistStorageException(resume.getUuid());
         }
@@ -51,13 +32,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public void delete(String uuid) {
-//        int index = findIndex(uuid);
-//        if (index >= 0) {
-//           deleteResume(index);
-//        } else {
-//            throw new NotExistStorageException(uuid);
-//        }
-        Object searchKey = findIndex(uuid);
+        Object searchKey = getSearchKey(uuid);
         if (!isExists(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
@@ -65,7 +40,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
 
-    protected abstract Object findIndex(String uuid);
+    protected abstract Object getSearchKey(String uuid);
 
     protected abstract boolean isExists(Object searchKey);
 

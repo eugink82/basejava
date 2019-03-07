@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import java.util.UUID;
 
-public class AbstractArrayStorageTest {
+public class AbstractStorageTest {
     private Storage storage;
 
     private static final String UUID_1 = "uuid1";
@@ -23,7 +23,7 @@ public class AbstractArrayStorageTest {
     private static final Resume RESUME3 = new Resume(UUID_3);
     private static final Resume NEW_RESUME = new Resume(NEW_UUID);
 
-    protected AbstractArrayStorageTest(Storage storage) {
+    protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -61,9 +61,10 @@ public class AbstractArrayStorageTest {
     @Test
     public void save() {
         // Check to increment size storage
-        int numElemsBeforeSave = storage.size();
+       // int numElemsBeforeSave = storage.size();
         storage.save(NEW_RESUME);
-        Assert.assertEquals(storage.size(), numElemsBeforeSave + 1);
+//        Assert.assertEquals(storage.size(), numElemsBeforeSave + 1);
+        Assert.assertEquals(4,storage.size());
         Assert.assertSame(NEW_RESUME, storage.get(NEW_RESUME.getUuid()));
     }
 
