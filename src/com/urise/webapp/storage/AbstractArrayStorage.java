@@ -26,29 +26,29 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void updateResume(Resume resume, int index) {
-        storage[index] = resume;
+    public void updateResume(Resume resume, Object index) {
+        storage[(int) index] = resume;
     }
 
     @Override
-    public void saveResume(Resume resume, int index){
+    public void saveResume(Resume resume, Object index) {
         if (numElems == STORAGE_LIMIT) {
             throw new StorageException("Хранилище заполнено, запись новых резюме невозможна", resume.getUuid());
         }
-        saveElemToStorage(resume, index);
+        saveElemToStorage(resume, (int) index);
         numElems++;
     }
 
     @Override
-    public Resume getResume(int index) {
-        return storage[index];
+    public Resume getResume(Object index) {
+        return storage[(int) index];
     }
 
     @Override
-    public void deleteResume(int index) {
-            deleteElemFromStorage(index);
-            storage[numElems - 1] = null;
-            numElems--;
+    public void deleteResume(Object index) {
+        deleteElemFromStorage((int) index);
+        storage[numElems - 1] = null;
+        numElems--;
     }
 
     /**
@@ -61,7 +61,15 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return resumes;
     }
 
-    protected abstract int findIndex(String uuid);
+    @Override
+    protected boolean isExists(Object searchKey) {
+        if ((int) searchKey >= 0) {
+            return true;
+        }
+        return false;
+    }
+
+    //  protected abstract int findIndex(String uuid);
 
     protected abstract void saveElemToStorage(Resume resume, int index);
 
