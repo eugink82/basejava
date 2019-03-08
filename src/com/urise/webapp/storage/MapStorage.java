@@ -26,17 +26,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected Object getSearchKey(String uuid) {
-//        for (Resume resume : mapStorage.values()) {
-//            if (uuid.equals(resume.getUuid())) {
-//                return uuid;
-//            }
-//        }
-        for(String key: mapStorage.keySet()){
-            if(uuid.equals(key)){
-                return key;
-            }
-        }
-        return null;
+                return uuid;
     }
 
     @Override
@@ -61,6 +51,6 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected boolean isExists(Object searchKey) {
-        return searchKey != null;
+        return mapStorage.containsKey(searchKey);
     }
 }
