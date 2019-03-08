@@ -1,6 +1,7 @@
 package com.urise.webapp;
 
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.MapStorage;
 
 import java.util.*;
 
@@ -40,5 +41,12 @@ public class MainCollections {
         map.put(UUID_1, RESUME1);
         map.put(UUID_2, RESUME2);
         map.put(UUID_3, RESUME3);
+        MapStorage mapStorage=new MapStorage();
+        mapStorage.save(RESUME1);
+        mapStorage.save(RESUME2);
+        mapStorage.save(RESUME3);
+        mapStorage.getAll();
+
+
     }
 }
