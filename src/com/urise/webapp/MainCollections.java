@@ -11,10 +11,10 @@ public class MainCollections {
     private static final String UUID_3 = "uuid3";
     private static final String NEW_UUID = "abracadabra";
 
-    private static final Resume RESUME1 = new Resume(UUID_1);
-    private static final Resume RESUME2 = new Resume(UUID_2);
-    private static final Resume RESUME3 = new Resume(UUID_3);
-    private static final Resume NEW_RESUME = new Resume(NEW_UUID);
+    private static final Resume RESUME1 = new Resume(UUID_1,"");
+    private static final Resume RESUME2 = new Resume(UUID_2,"");
+    private static final Resume RESUME3 = new Resume(UUID_3,"");
+    private static final Resume NEW_RESUME = new Resume(NEW_UUID,"");
     public static void main(String[] args) {
         Collection<Resume> collection = new ArrayList<>();
         collection.add(RESUME1);
@@ -45,7 +45,10 @@ public class MainCollections {
         mapStorage.save(RESUME1);
         mapStorage.save(RESUME2);
         mapStorage.save(RESUME3);
-        mapStorage.getAll();
+       // mapStorage.getAll();  /*Заменен на getAllSorted()
+        mapStorage.getAllSorted();
+        List<Resume> resumes = Arrays.asList(RESUME1, RESUME2, RESUME3);
+        resumes.remove(RESUME1);
 
 
     }

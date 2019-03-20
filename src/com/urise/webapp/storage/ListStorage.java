@@ -6,47 +6,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    List<Resume> storage = new ArrayList<>();
+    List<Resume> listStorage = new ArrayList<>();
 
     @Override
     public void clear() {
-        storage.clear();
+        listStorage.clear();
     }
 
     @Override
-    public void updateResume(Resume resume, Object index) {
-        storage.set((int) index, resume);
+    public void updateResume(Resume resume, Object searchKey) {
+        listStorage.set((int) searchKey, resume);
     }
 
     @Override
-    public void saveResume(Resume resume, Object index) {
-        storage.add(resume);
+    public void saveResume(Resume resume, Object searchKey) {
+        listStorage.add(resume);
     }
 
 
     @Override
-    public Resume getResume(Object index) {
-        return storage.get((int) index);
+    public Resume getResume(Object searchKey) {
+        return listStorage.get((int) searchKey);
     }
 
     @Override
-    public void deleteResume(Object index) {
-        storage.remove((int)index);
+    public void deleteResume(Object searchKey) {
+        listStorage.remove((int)searchKey);
     }
 
+    /* Заменена реализации Resume[] getAll() на List<Resume> getAllSorted()*/
+//    @Override
+//    public Resume[] getAll() {
+//        return listStorage.toArray(new Resume[size()]);
+//    }
+
     @Override
-    public Resume[] getAll() {
-        return storage.toArray(new Resume[size()]);
+    public List<Resume> getAllSorted() {
+        return listStorage;
     }
 
     @Override
     public int size() {
-        return storage.size();
+        return listStorage.size();
     }
 
     public Object getSearchKey(String uuid) {
-        for (int i = 0; i < storage.size(); i++) {
-            if (uuid.equals(storage.get(i).getUuid())) {
+        for (int i = 0; i < listStorage.size(); i++) {
+            if (uuid.equals(listStorage.get(i).getUuid())) {
                 return i;
             }
         }

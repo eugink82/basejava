@@ -2,7 +2,9 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
@@ -14,9 +16,16 @@ public class MapStorage extends AbstractStorage {
         mapStorage.clear();
     }
 
+    /* Заменена реализации Resume[] getAll() на List<Resume> getAllSorted()*/
+//    @Override
+//    public Resume[] getAll() {
+//        return mapStorage.values().toArray(new Resume[size()]);
+//    }
+
     @Override
-    public Resume[] getAll() {
-        return mapStorage.values().toArray(new Resume[size()]);
+    public List<Resume> getAllSorted() {
+        Resume[] resumes=mapStorage.values().toArray(new Resume[size()]);
+        return Arrays.asList(resumes);
     }
 
     @Override

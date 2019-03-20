@@ -7,21 +7,28 @@ import com.urise.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
+import java.util.List;
 import java.util.UUID;
 
 public class AbstractStorageTest {
-    private Storage storage;
+    protected Storage storage;
 
     private static final String UUID_1 = "uuid1";
+    private static final String FULLNAME_1="Ivanov Sergey";
     private static final String UUID_2 = "uuid2";
+    private static final String FULLNAME_2="Sidorov Genadiy";
     private static final String UUID_3 = "uuid3";
+    private static final String FULLNAME_3="Murzabekov Ravshan";
     private static final String NEW_UUID = "abrakadabra";
+    private static final String NEW_FULLNAME="Konoplev Vladimir";
 
-    private static final Resume RESUME1 = new Resume(UUID_1);
-    private static final Resume RESUME2 = new Resume(UUID_2);
-    private static final Resume RESUME3 = new Resume(UUID_3);
-    private static final Resume NEW_RESUME = new Resume(NEW_UUID);
+    private static final Resume RESUME1 = new Resume(UUID_1,FULLNAME_1);
+    private static final Resume RESUME2 = new Resume(UUID_2,FULLNAME_2);
+    private static final Resume RESUME3 = new Resume(UUID_3,FULLNAME_3);
+    private static final Resume NEW_RESUME = new Resume(NEW_UUID,NEW_FULLNAME);
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -48,7 +55,7 @@ public class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume resume1 = new Resume(UUID_1);
+        Resume resume1 = new Resume(UUID_1,FULLNAME_1);
         storage.update(resume1);
         Assert.assertSame(resume1, storage.get(UUID_1));
     }
@@ -73,17 +80,7 @@ public class AbstractStorageTest {
         storage.save(RESUME1);
     }
 
-    @Test(expected = StorageException.class)
-    public void saveToOverFlowStorage() {
-        storage.clear();
-        try {
-            for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++)
-                storage.save(new Resume(UUID.randomUUID().toString()));
-        } catch (StorageException e) {
-            Assert.fail("Тест на переполнение провален!");
-        }
-        storage.save(new Resume(UUID.randomUUID().toString()));
-    }
+
 
     @Test
     public void get() {
@@ -110,11 +107,18 @@ public class AbstractStorageTest {
 
     @Test
     public void getAll() {
-        Resume[] array=storage.getAll();
-        Assert.assertEquals(3,array.length);
-        Assert.assertEquals(RESUME1,array[0]);
-        Assert.assertEquals(RESUME2,array[1]);
-        Assert.assertEquals(RESUME3,array[2]);
+        /*Замена Resume[] на List<Resume>*/
+//        Resume[] array=storage.getAll();
+//        Assert.assertEquals(3,array.length);
+//        Assert.assertEquals(RESUME1,array[0]);
+//        Assert.assertEquals(RESUME2,array[1]);
+//        Assert.assertEquals(RESUME3,array[2]);
+
+        List<Resume> array=storage.getAllSorted();
+        Assert.assertEquals(3, array.size());
+        Assert.assertEquals(RESUME1,array.get(0));
+        Assert.assertEquals(RESUME2,array.get(1));
+        Assert.assertEquals(RESUME3,array.get(2));
     }
 
 
