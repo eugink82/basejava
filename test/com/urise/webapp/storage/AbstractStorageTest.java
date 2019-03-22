@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,18 +19,14 @@ public class AbstractStorageTest {
     protected Storage storage;
 
     private static final String UUID_1 = "uuid1";
-    private static final String FULLNAME_1="Ivanov Sergey";
     private static final String UUID_2 = "uuid2";
-    private static final String FULLNAME_2="Sidorov Genadiy";
     private static final String UUID_3 = "uuid3";
-    private static final String FULLNAME_3="Murzabekov Ravshan";
     private static final String NEW_UUID = "abrakadabra";
-    private static final String NEW_FULLNAME="Konoplev Vladimir";
 
-    private static final Resume RESUME1 = new Resume(UUID_1,FULLNAME_1);
-    private static final Resume RESUME2 = new Resume(UUID_2,FULLNAME_2);
-    private static final Resume RESUME3 = new Resume(UUID_3,FULLNAME_3);
-    private static final Resume NEW_RESUME = new Resume(NEW_UUID,NEW_FULLNAME);
+    private static final Resume RESUME1 = new Resume(UUID_1, "Ivanov");
+    private static final Resume RESUME2 = new Resume(UUID_2, "Sidorov");
+    private static final Resume RESUME3 = new Resume(UUID_3, "Murzabekov");
+    private static final Resume NEW_RESUME = new Resume(NEW_UUID, "Konoplev Vladimir");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -55,7 +53,7 @@ public class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume resume1 = new Resume(UUID_1,FULLNAME_1);
+        Resume resume1 = new Resume(UUID_1, "Andrei Petrov");
         storage.update(resume1);
         Assert.assertSame(resume1, storage.get(UUID_1));
     }
@@ -67,11 +65,8 @@ public class AbstractStorageTest {
 
     @Test
     public void save() {
-        // Check to increment size storage
-       // int numElemsBeforeSave = storage.size();
         storage.save(NEW_RESUME);
-//        Assert.assertEquals(storage.size(), numElemsBeforeSave + 1);
-        Assert.assertEquals(4,storage.size());
+        Assert.assertEquals(4, storage.size());
         Assert.assertSame(NEW_RESUME, storage.get(NEW_RESUME.getUuid()));
     }
 
@@ -79,7 +74,6 @@ public class AbstractStorageTest {
     public void saveExist() {
         storage.save(RESUME1);
     }
-
 
 
     @Test
@@ -108,17 +102,11 @@ public class AbstractStorageTest {
     @Test
     public void getAll() {
         /*Замена Resume[] на List<Resume>*/
-//        Resume[] array=storage.getAll();
-//        Assert.assertEquals(3,array.length);
-//        Assert.assertEquals(RESUME1,array[0]);
-//        Assert.assertEquals(RESUME2,array[1]);
-//        Assert.assertEquals(RESUME3,array[2]);
-
-        List<Resume> array=storage.getAllSorted();
-        Assert.assertEquals(3, array.size());
-        Assert.assertEquals(RESUME1,array.get(0));
-        Assert.assertEquals(RESUME2,array.get(1));
-        Assert.assertEquals(RESUME3,array.get(2));
+        List<Resume> list = storage.getAllSorted();
+        Assert.assertEquals(3, list.size());
+        List<Resume> listTestResumes = Arrays.asList(RESUME1, RESUME2, RESUME3);
+        Collections.sort(listTestResumes);
+        Assert.assertEquals(list, listTestResumes);
     }
 
 

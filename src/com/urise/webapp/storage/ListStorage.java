@@ -3,10 +3,12 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    List<Resume> listStorage = new ArrayList<>();
+    private List<Resume> listStorage = new ArrayList<>();
 
     @Override
     public void clear() {
@@ -31,17 +33,12 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public void deleteResume(Object searchKey) {
-        listStorage.remove((int)searchKey);
+        listStorage.remove((int) searchKey);
     }
 
-    /* Заменена реализации Resume[] getAll() на List<Resume> getAllSorted()*/
-//    @Override
-//    public Resume[] getAll() {
-//        return listStorage.toArray(new Resume[size()]);
-//    }
-
+    /* Заменена реализации Resume[] getAll() на List<Resume> getSorted()*/
     @Override
-    public List<Resume> getAllSorted() {
+    protected List<Resume> getList() {
         return listStorage;
     }
 

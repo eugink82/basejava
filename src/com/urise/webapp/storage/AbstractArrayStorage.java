@@ -4,6 +4,7 @@ import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10_000;
 
     public Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int numElems = 0;
+    protected int numElems = 0;  //реальный размер хранилища резюме
 
     @Override
     public int size() {
@@ -52,24 +53,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         numElems--;
     }
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
-    /* Заменена реализации Resume[] getAll() на List<Resume> getAllSorted()*/
- //   @Override
-//    public Resume[] getAll() {
-//        Resume[] resumes = new Resume[numElems];
-//        System.arraycopy(storage, 0, resumes, 0, resumes.length);
-//        return resumes;
-//    }
-
-
     @Override
-    public List<Resume> getAllSorted() {
-        Resume[] resumes=new Resume[numElems];
-        System.arraycopy(storage,0,resumes,0,resumes.length);
-        List<Resume> resumesList=Arrays.asList(resumes);
-        return resumesList;
+    protected List<Resume> getList() {
+        Resume[] resumes = new Resume[numElems];
+        System.arraycopy(storage, 0, resumes, 0, resumes.length);
+        return Arrays.asList(resumes);
     }
 
     @Override

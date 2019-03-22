@@ -9,7 +9,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
-public class AbstractArrayStorageTest extends AbstractStorageTest{
+public class AbstractArrayStorageTest extends AbstractStorageTest {
 
 
     public AbstractArrayStorageTest(Storage storage) {
@@ -21,11 +21,11 @@ public class AbstractArrayStorageTest extends AbstractStorageTest{
         storage.clear();
         try {
             for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++)
-                storage.save(new Resume(UUID.randomUUID().toString(),""));
+                storage.save(new Resume(UUID.randomUUID().toString(), ""));
         } catch (StorageException e) {
             Assert.fail("Тест на переполнение провален!");
         }
-        storage.save(new Resume(UUID.randomUUID().toString(),""));
+        storage.save(new Resume(UUID.randomUUID().toString(), ""));
     }
 
 }

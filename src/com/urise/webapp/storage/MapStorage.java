@@ -16,15 +16,10 @@ public class MapStorage extends AbstractStorage {
         mapStorage.clear();
     }
 
-    /* Заменена реализации Resume[] getAll() на List<Resume> getAllSorted()*/
-//    @Override
-//    public Resume[] getAll() {
-//        return mapStorage.values().toArray(new Resume[size()]);
-//    }
-
+    /* Заменена реализации Resume[] getAll() на List<Resume> getSorted()*/
     @Override
-    public List<Resume> getAllSorted() {
-        Resume[] resumes=mapStorage.values().toArray(new Resume[size()]);
+    public List<Resume> getList() {
+        Resume[] resumes = mapStorage.values().toArray(new Resume[size()]);
         return Arrays.asList(resumes);
     }
 
@@ -34,13 +29,13 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
-                return uuid;
+    protected String getSearchKey(String uuid) {
+        return uuid;
     }
 
     @Override
     protected Resume getResume(Object uuid) {
-        return mapStorage.get((String)uuid);
+        return mapStorage.get((String) uuid);
     }
 
     @Override
