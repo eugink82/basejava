@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
 
-    Map<String, Resume> mapStorage = new LinkedHashMap<String, Resume>();
+    Map<String, Resume> mapStorage = new LinkedHashMap<>();
 
     @Override
     public void clear() {

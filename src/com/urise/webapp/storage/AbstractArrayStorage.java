@@ -14,17 +14,17 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10_000;
 
     public Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int numElems = 0;  //реальный размер хранилища резюме
+    protected int size = 0;  //реальный размер хранилища резюме
 
     @Override
     public int size() {
-        return numElems;
+        return size;
     }
 
     @Override
     public void clear() {
-        Arrays.fill(storage, 0, numElems, null);
-        numElems = 0;
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
     }
 
     @Override
@@ -34,11 +34,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     public void saveResume(Resume resume, Object index) {
-        if (numElems == STORAGE_LIMIT) {
+        if (size == STORAGE_LIMIT) {
             throw new StorageException("Хранилище заполнено, запись новых резюме невозможна", resume.getUuid());
         }
         saveElemToStorage(resume, (int) index);
-        numElems++;
+        size++;
     }
 
     @Override
@@ -49,13 +49,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     public void deleteResume(Object index) {
         deleteElemFromStorage((int) index);
-        storage[numElems - 1] = null;
-        numElems--;
+        storage[size - 1] = null;
+        size--;
     }
 
     @Override
     protected List<Resume> getList() {
-        Resume[] resumes = new Resume[numElems];
+        Resume[] resumes = new Resume[size];
         System.arraycopy(storage, 0, resumes, 0, resumes.length);
         return Arrays.asList(resumes);
     }
@@ -64,8 +64,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected boolean isExists(Object searchKey) {
         return (int) searchKey >= 0;
     }
-
-    //  protected abstract int findIndex(String uuid);
 
     protected abstract void saveElemToStorage(Resume resume, int index);
 

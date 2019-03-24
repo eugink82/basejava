@@ -39,7 +39,7 @@ public class ListStorage extends AbstractStorage {
     /* Заменена реализации Resume[] getAll() на List<Resume> getSorted()*/
     @Override
     protected List<Resume> getList() {
-        return listStorage;
+        return new ArrayList<>(listStorage);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class ListStorage extends AbstractStorage {
         return listStorage.size();
     }
 
-    public Object getSearchKey(String uuid) {
+    public Integer getSearchKey(String uuid) {
         for (int i = 0; i < listStorage.size(); i++) {
             if (uuid.equals(listStorage.get(i).getUuid())) {
                 return i;

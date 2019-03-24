@@ -17,20 +17,20 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     protected Object getSearchKey(String uuid) {
         Resume searchKey = new Resume(uuid, "not user");
-        return Arrays.binarySearch(storage, 0, numElems, searchKey, RESUME_COMPARATOR);
+        return Arrays.binarySearch(storage, 0, size, searchKey, RESUME_COMPARATOR);
     }
 
     @Override
     protected void saveElemToStorage(Resume resume, int index) {
         index = Math.abs(index) - 1;
-        System.arraycopy(storage, index, storage, index + 1, numElems - index);
+        System.arraycopy(storage, index, storage, index + 1, size - index);
         storage[index] = resume;
     }
 
     @Override
     protected void deleteElemFromStorage(int index) {
-        if (index != numElems - 1) {
-            System.arraycopy(storage, index + 1, storage, index, (numElems - index) - 1);
+        if (index != size - 1) {
+            System.arraycopy(storage, index + 1, storage, index, (size - index) - 1);
         }
     }
 }
