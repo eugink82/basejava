@@ -10,13 +10,15 @@ public class Resume implements Comparable<Resume> {
 
     // Unique identifier
     private final String uuid;
-    private String fullName;
+    private final String fullName;
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
     }
 
     public Resume(String uuid, String fullName) {
+        Objects.requireNonNull(uuid, "uuid поле не должно быть пустым");
+        Objects.requireNonNull(fullName, "fullName поле не должно быть пустым");
         this.uuid = uuid;
         this.fullName = fullName;
     }

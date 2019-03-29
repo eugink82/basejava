@@ -78,7 +78,7 @@ public class AbstractStorageTest {
 
     @Test
     public void get() {
-        Assert.assertEquals(RESUME1,storage.get(UUID_1));
+        Assert.assertEquals(RESUME1, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -106,7 +106,7 @@ public class AbstractStorageTest {
         Assert.assertEquals(3, list.size());
         List<Resume> listTestResumes = Arrays.asList(RESUME1, RESUME2, RESUME3);
         Collections.sort(listTestResumes);
-        Assert.assertEquals(list, listTestResumes);
+        Assert.assertEquals(listTestResumes, list);
     }
 
 

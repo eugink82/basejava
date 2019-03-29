@@ -38,7 +38,7 @@ public class ListStorage extends AbstractStorage {
 
     /* Заменена реализации Resume[] getAll() на List<Resume> getSorted()*/
     @Override
-    protected List<Resume> getList() {
+    protected List<Resume> getCopyList() {
         return new ArrayList<>(listStorage);
     }
 

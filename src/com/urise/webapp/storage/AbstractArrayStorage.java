@@ -14,7 +14,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10_000;
 
     public Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int size = 0;  //реальный размер хранилища резюме
+    protected int size = 0;
 
     @Override
     public int size() {
@@ -54,7 +54,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected List<Resume> getList() {
+    protected List<Resume> getCopyList() {
         Resume[] resumes = new Resume[size];
         System.arraycopy(storage, 0, resumes, 0, resumes.length);
         return Arrays.asList(resumes);

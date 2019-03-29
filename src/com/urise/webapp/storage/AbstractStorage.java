@@ -34,6 +34,13 @@ public abstract class AbstractStorage implements Storage {
         deleteResume(searchKey);
     }
 
+    @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> list = getCopyList();
+        Collections.sort(list);
+        return list;
+    }
+
     private Object getNotExistedSearchKey(Resume resume) {
         Object searchKey = getSearchKey(resume.getUuid());
         if (isExists(searchKey)) {
@@ -50,14 +57,8 @@ public abstract class AbstractStorage implements Storage {
         return searchKey;
     }
 
-    @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> list = getList();
-        Collections.sort(list);
-        return list;
-    }
 
-    protected abstract List<Resume> getList();
+    protected abstract List<Resume> getCopyList();
 
     protected abstract Object getSearchKey(String uuid);
 

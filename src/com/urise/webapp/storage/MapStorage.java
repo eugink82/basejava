@@ -2,14 +2,11 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MapStorage extends AbstractStorage {
 
-    Map<String, Resume> mapStorage = new LinkedHashMap<>();
+    private Map<String, Resume> mapStorage = new LinkedHashMap<>();
 
     @Override
     public void clear() {
@@ -18,9 +15,8 @@ public class MapStorage extends AbstractStorage {
 
     /* Заменена реализации Resume[] getAll() на List<Resume> getSorted()*/
     @Override
-    public List<Resume> getList() {
-        Resume[] resumes = mapStorage.values().toArray(new Resume[size()]);
-        return Arrays.asList(resumes);
+    public List<Resume> getCopyList() {
+        return new ArrayList<>(mapStorage.values());
     }
 
     @Override
@@ -50,11 +46,11 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void deleteResume(Object uuid) {
-        mapStorage.remove(uuid);
+        mapStorage.remove((String) uuid);
     }
 
     @Override
     protected boolean isExists(Object searchKey) {
-        return mapStorage.containsKey(searchKey);
+        return mapStorage.containsKey((String) searchKey);
     }
 }
