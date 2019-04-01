@@ -1,7 +1,8 @@
 package com.urise.webapp.model;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.io.*;
+import java.util.Map.Entry;
 
 /**
  * Initial resume class
@@ -11,6 +12,8 @@ public class Resume implements Comparable<Resume> {
     // Unique identifier
     private final String uuid;
     private final String fullName;
+    public Map<SectionType, Sections> mapSections=new LinkedHashMap<>();
+    public Map<ContactType, String> mapContacts=new LinkedHashMap<>();
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -29,6 +32,14 @@ public class Resume implements Comparable<Resume> {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public Sections getSection(SectionType s) {
+        return mapSections.get(s);
+    }
+
+    public String getContact(ContactType cType){
+        return mapContacts.get(cType);
     }
 
     @Override
@@ -58,4 +69,20 @@ public class Resume implements Comparable<Resume> {
         int resultCompare = fullName.compareTo(o.getFullName());
         return resultCompare != 0 ? resultCompare : uuid.compareTo(o.getUuid());
     }
+
+    public void addContacts() throws IOException{
+        BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
+        for(ContactType c: ContactType.values()){
+            System.out.print("Введите "+c.getTittle()+": ");
+            mapContacts.put(c,reader.readLine());
+        }
+    }
+
+    public void printContacts(){
+        System.out.println(fullName);
+        for(Map.Entry<ContactType,String> m: mapContacts.entrySet()){
+            System.out.println(m.getKey()+": "+m.getValue());
+        }
+    }
+
 }
