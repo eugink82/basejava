@@ -1,7 +1,7 @@
 package com.urise.webapp.model;
 
 public class SimpleTextSection implements Sections {
-   private String content;
+    private String content;
 
     public SimpleTextSection(String content) {
         this.content = content;
@@ -29,10 +29,5 @@ public class SimpleTextSection implements Sections {
     @Override
     public String toString() {
         return content;
-    }
-
-    @Override
-    public void printSection() {
-        System.out.println(content);
     }
 }

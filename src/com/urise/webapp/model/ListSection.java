@@ -1,6 +1,5 @@
 package com.urise.webapp.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListSection implements Sections {
@@ -31,13 +30,9 @@ public class ListSection implements Sections {
 
     @Override
     public String toString() {
-        return list.toString();
-    }
-
-    @Override
-    public void printSection() {
-        for(String s: list){
-            System.out.println("-"+s);
-        }
+        StringBuilder sb = new StringBuilder();
+        for (String section : list)
+            sb.append("-").append(section).append(System.lineSeparator());
+        return sb.toString();
     }
 }

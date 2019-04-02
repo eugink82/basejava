@@ -3,7 +3,7 @@ package com.urise.webapp.model;
 import java.util.List;
 
 public class CompanySection implements Sections {
-   private List<Company> listCompany;
+    private List<Company> listCompany;
 
     public CompanySection(List<Company> listCompany) {
         this.listCompany = listCompany;
@@ -30,13 +30,9 @@ public class CompanySection implements Sections {
 
     @Override
     public String toString() {
-        return listCompany.toString();
-    }
-
-    @Override
-    public void printSection() {
-        for(Company c: listCompany){
-            System.out.println(c);
-        }
+        StringBuilder sb = new StringBuilder();
+        for (Company section : listCompany)
+            sb.append(section).append(System.lineSeparator());
+        return sb.toString();
     }
 }

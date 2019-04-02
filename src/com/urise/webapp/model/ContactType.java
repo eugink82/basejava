@@ -10,7 +10,7 @@ public enum ContactType {
     private String tittle;
 
     ContactType(String tittle) {
-        this.tittle=tittle;
+        this.tittle = tittle;
     }
 
     public String getTittle() {

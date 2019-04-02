@@ -12,8 +12,8 @@ public class Resume implements Comparable<Resume> {
     // Unique identifier
     private final String uuid;
     private final String fullName;
-    public Map<SectionType, Sections> mapSections=new LinkedHashMap<>();
-    public Map<ContactType, String> mapContacts=new LinkedHashMap<>();
+    public Map<SectionType, Sections> mapSections = new EnumMap<>(SectionType.class);
+    public Map<ContactType, String> mapContacts = new EnumMap<>(ContactType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -38,7 +38,7 @@ public class Resume implements Comparable<Resume> {
         return mapSections.get(s);
     }
 
-    public String getContact(ContactType cType){
+    public String getContact(ContactType cType) {
         return mapContacts.get(cType);
     }
 
@@ -46,14 +46,22 @@ public class Resume implements Comparable<Resume> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Resume resume = (Resume) o;
-        return Objects.equals(uuid, resume.uuid) &&
-                Objects.equals(fullName, resume.fullName);
+
+        if (uuid != null ? !uuid.equals(resume.uuid) : resume.uuid != null) return false;
+        if (fullName != null ? !fullName.equals(resume.fullName) : resume.fullName != null) return false;
+        if (mapSections != null ? !mapSections.equals(resume.mapSections) : resume.mapSections != null) return false;
+        return mapContacts != null ? mapContacts.equals(resume.mapContacts) : resume.mapContacts == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, fullName);
+        int result = uuid != null ? uuid.hashCode() : 0;
+        result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
+        result = 31 * result + (mapSections != null ? mapSections.hashCode() : 0);
+        result = 31 * result + (mapContacts != null ? mapContacts.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -70,18 +78,18 @@ public class Resume implements Comparable<Resume> {
         return resultCompare != 0 ? resultCompare : uuid.compareTo(o.getUuid());
     }
 
-    public void addContacts() throws IOException{
-        BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
-        for(ContactType c: ContactType.values()){
-            System.out.print("Введите "+c.getTittle()+": ");
-            mapContacts.put(c,reader.readLine());
+    public void addContacts() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        for (ContactType c : ContactType.values()) {
+            System.out.print("Введите " + c.getTittle() + ": ");
+            mapContacts.put(c, reader.readLine());
         }
     }
 
-    public void printContacts(){
+    public void printContacts() {
         System.out.println(fullName);
-        for(Map.Entry<ContactType,String> m: mapContacts.entrySet()){
-            System.out.println(m.getKey()+": "+m.getValue());
+        for (Map.Entry<ContactType, String> m : mapContacts.entrySet()) {
+            System.out.println(m.getKey() + ": " + m.getValue());
         }
     }
 
