@@ -13,19 +13,20 @@ public class TestSingleton {
     }
 
     public static void main(String[] args) {
-        Singleton instance=Singleton.valueOf("INSTANCE");
+        Singleton instance = Singleton.valueOf("INSTANCE");
         System.out.println(instance);
-        Week week=Week.valueOf("Friday");
+        Week week = Week.valueOf("Friday");
         System.out.println(instance.ordinal());
-        for(SectionType type: SectionType.values()){
-            System.out.println(type+" "+type.getTittle());
+        for (SectionType type : SectionType.values()) {
+            System.out.println(type + " " + type.getTitle());
         }
     }
 
-    public enum Singleton{
+    public enum Singleton {
         INSTANCE
     }
-    public enum Week{
+
+    public enum Week {
         Monday,
         Friday
     }

@@ -1,13 +1,21 @@
 package com.urise.webapp.model;
 
+import java.util.*;
+
 public class SimpleTextSection implements Sections {
-    private String content;
+    private final String content;
 
     public SimpleTextSection(String content) {
+        Objects.requireNonNull(content, "Контент не должен быть пустым");
         this.content = content;
     }
 
     public String getContent() {
+        return content;
+    }
+
+    @Override
+    public String toString() {
         return content;
     }
 
@@ -18,16 +26,11 @@ public class SimpleTextSection implements Sections {
 
         SimpleTextSection that = (SimpleTextSection) o;
 
-        return content != null ? content.equals(that.content) : that.content == null;
+        return content.equals(that.content);
     }
 
     @Override
     public int hashCode() {
-        return content != null ? content.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return content;
+        return content.hashCode();
     }
 }

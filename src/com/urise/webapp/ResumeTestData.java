@@ -48,10 +48,10 @@ public class ResumeTestData {
 
         ListSection listSection2 = new ListSection(list2);
 
-        Company company1 = new Company("Java Online Projects", LocalDate.of(2013, 10, 1),
+        Company company1 = new Company("Java Online Projects", "JavaOnlineProjects.html", LocalDate.of(2013, 10, 1),
                 LocalDate.now(), "Автор проекта.", "Создание, организация и проведение" +
                 " Java онлайн проектов и стажировок.");
-        Company company2 = new Company("Wrike", LocalDate.of(2014, 10, 1),
+        Company company2 = new Company("Wrike", "Wrike.html", LocalDate.of(2014, 10, 1),
                 LocalDate.of(2016, 01, 31), "Старший разработчик (backend)",
                 "Проектирование и разработка онлайн платформы управления проектами " +
                         "Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis)." +
@@ -60,9 +60,9 @@ public class ResumeTestData {
         listCompany1.add(company1);
         listCompany1.add(company2);
         CompanySection companySection1 = new CompanySection(listCompany1);
-        Company company3 = new Company("Coursera", LocalDate.of(2013, 03, 1), LocalDate.of(2013, 05, 31),
+        Company company3 = new Company("Coursera", "Coursera.html", LocalDate.of(2013, 03, 1), LocalDate.of(2013, 05, 31),
                 "\"Functional Programming Principles in Scala\" by Martin Odersky", "");
-        Company company4 = new Company("Luxoft", LocalDate.of(2011, 03, 1), LocalDate.of(2011, 04, 30),
+        Company company4 = new Company("Luxoft", "Luxoft.html", LocalDate.of(2011, 03, 1), LocalDate.of(2011, 04, 30),
                 "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"", "");
 
         List<Company> listCompany2 = new ArrayList<>();
@@ -90,7 +90,7 @@ public class ResumeTestData {
             if (m.getKey() != s) {
                 System.out.println();
                 System.out.println();
-                System.out.println(m.getKey().getTittle());
+                System.out.println(m.getKey().getTitle());
                 System.out.println();
             }
             //m.getValue().printSection();

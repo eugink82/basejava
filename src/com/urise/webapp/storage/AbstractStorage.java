@@ -11,25 +11,25 @@ import java.util.logging.*;
 
 public abstract class AbstractStorage<SK> implements Storage {
     //protected final Logger log=Logger.getLogger(getClass().getName());
-    private static final Logger LOG=Logger.getLogger(AbstractStorage.class.getName());
+    private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
     @Override
     public Resume get(String uuid) {
-        LOG.info("Get "+uuid);
+        LOG.info("Get " + uuid);
         SK searchKey = getExistedSearchKey(uuid);
         return getResume(searchKey);
     }
 
     @Override
     public void update(Resume resume) {
-        LOG.info("Update "+resume);
+        LOG.info("Update " + resume);
         SK searchKey = getExistedSearchKey(resume.getUuid());
         updateResume(resume, searchKey);
     }
 
     @Override
     public void save(Resume resume) {
-        LOG.info("Save "+resume);
+        LOG.info("Save " + resume);
         SK searchKey = getNotExistedSearchKey(resume);
         saveResume(resume, searchKey);
 
@@ -37,7 +37,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     @Override
     public void delete(String uuid) {
-        LOG.info("Delete "+uuid);
+        LOG.info("Delete " + uuid);
         SK searchKey = getExistedSearchKey(uuid);
         deleteResume(searchKey);
     }

@@ -42,6 +42,7 @@ public class Resume implements Comparable<Resume> {
         return mapContacts.get(cType);
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,21 +77,6 @@ public class Resume implements Comparable<Resume> {
     public int compareTo(Resume o) {
         int resultCompare = fullName.compareTo(o.getFullName());
         return resultCompare != 0 ? resultCompare : uuid.compareTo(o.getUuid());
-    }
-
-    public void addContacts() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        for (ContactType c : ContactType.values()) {
-            System.out.print("Введите " + c.getTittle() + ": ");
-            mapContacts.put(c, reader.readLine());
-        }
-    }
-
-    public void printContacts() {
-        System.out.println(fullName);
-        for (Map.Entry<ContactType, String> m : mapContacts.entrySet()) {
-            System.out.println(m.getKey() + ": " + m.getValue());
-        }
     }
 
 }

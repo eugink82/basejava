@@ -1,16 +1,26 @@
 package com.urise.webapp.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CompanySection implements Sections {
-    private List<Company> listCompany;
+    private final List<Company> listCompany;
 
     public CompanySection(List<Company> listCompany) {
+        Objects.requireNonNull(listCompany, "Поле \"Организация\" не должно быть пустым");
         this.listCompany = listCompany;
     }
 
     public List<Company> getListCompany() {
         return listCompany;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Company section : listCompany)
+            sb.append(section).append(System.lineSeparator());
+        return sb.toString();
     }
 
     @Override
@@ -20,19 +30,11 @@ public class CompanySection implements Sections {
 
         CompanySection that = (CompanySection) o;
 
-        return listCompany != null ? listCompany.equals(that.listCompany) : that.listCompany == null;
+        return listCompany.equals(that.listCompany);
     }
 
     @Override
     public int hashCode() {
-        return listCompany != null ? listCompany.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (Company section : listCompany)
-            sb.append(section).append(System.lineSeparator());
-        return sb.toString();
+        return listCompany.hashCode();
     }
 }

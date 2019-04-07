@@ -7,13 +7,13 @@ public enum ContactType {
     PROFILE("Профиль в соц.сети"),
     HOMEPAGE("Домашняя страница");
 
-    private String tittle;
+    private String title;
 
-    ContactType(String tittle) {
-        this.tittle = tittle;
+    ContactType(String title) {
+        this.title = title;
     }
 
-    public String getTittle() {
-        return tittle;
+    public String getTitle() {
+        return title;
     }
 }

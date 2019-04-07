@@ -2,29 +2,32 @@ package com.urise.webapp.model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.*;
 
 public class Company {
-    private String name;
-    private LocalDate startWork;
-    private LocalDate endWork;
-    private String position;
-    private String descriptionPosition;
+    private final Link homepage;
+    private final LocalDate startWork;
+    private final LocalDate endWork;
+    private final String position;
+    private final String description;
 
-    public Company(String name, LocalDate startWork, LocalDate endWork, String position, String descriptionPosition) {
-        this.name = name;
+    public Company(String name, String url, LocalDate startWork, LocalDate endWork, String position, String description) {
+        Objects.requireNonNull(startWork, "Начало работы не должно быть пустым");
+        Objects.requireNonNull(endWork, "Конец работы не должно быть пустым");
+        Objects.requireNonNull(position, "Позиция работы, учебы не должно быть пустым");
+        this.homepage = new Link(name, url);
         this.startWork = startWork;
         this.endWork = endWork;
         this.position = position;
-        this.descriptionPosition = descriptionPosition;
+        this.description = description;
     }
 
     @Override
     public String toString() {
         String DatePattern = "MM/yyyy";
         DateTimeFormatter dateFormater = DateTimeFormatter.ofPattern(DatePattern);
-        return name + System.lineSeparator() + dateFormater.format(startWork) + "-" + dateFormater.format(endWork) + "  "
-                + position + System.lineSeparator() + descriptionPosition;
+        return homepage.getName() + System.lineSeparator() + dateFormater.format(startWork) + "-" + dateFormater.format(endWork) + "  "
+                + position + System.lineSeparator() + description;
     }
 
     @Override
@@ -34,20 +37,20 @@ public class Company {
 
         Company company = (Company) o;
 
-        if (name != null ? !name.equals(company.name) : company.name != null) return false;
-        if (startWork != null ? !startWork.equals(company.startWork) : company.startWork != null) return false;
-        if (endWork != null ? !endWork.equals(company.endWork) : company.endWork != null) return false;
-        if (position != null ? !position.equals(company.position) : company.position != null) return false;
-        return descriptionPosition != null ? descriptionPosition.equals(company.descriptionPosition) : company.descriptionPosition == null;
+        if (!homepage.equals(company.homepage)) return false;
+        if (!startWork.equals(company.startWork)) return false;
+        if (!endWork.equals(company.endWork)) return false;
+        if (!position.equals(company.position)) return false;
+        return description != null ? description.equals(company.description) : company.description == null;
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (startWork != null ? startWork.hashCode() : 0);
-        result = 31 * result + (endWork != null ? endWork.hashCode() : 0);
-        result = 31 * result + (position != null ? position.hashCode() : 0);
-        result = 31 * result + (descriptionPosition != null ? descriptionPosition.hashCode() : 0);
+        int result = homepage.hashCode();
+        result = 31 * result + startWork.hashCode();
+        result = 31 * result + endWork.hashCode();
+        result = 31 * result + position.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }
 }
