@@ -48,28 +48,58 @@ public class ResumeTestData {
 
         ListSection listSection2 = new ListSection(list2);
 
-        Company company1 = new Company("Java Online Projects", "JavaOnlineProjects.html", LocalDate.of(2013, 10, 1),
-                LocalDate.now(), "Автор проекта.", "Создание, организация и проведение" +
-                " Java онлайн проектов и стажировок.");
-        Company company2 = new Company("Wrike", "Wrike.html", LocalDate.of(2014, 10, 1),
-                LocalDate.of(2016, 01, 31), "Старший разработчик (backend)",
+        List<Company.Position> positionJavaOnlineProject = new ArrayList<>();
+        positionJavaOnlineProject.add(new Company.Position("Автор проекта.", "Создание, организация и проведение  Java онлайн проектов и стажировок.",
+                LocalDate.of(2013, 10, 1), LocalDate.now()));
+        Company companyJavaOnlineProject = new Company(new Link("Java Online Projects", "JavaOnlineProjects.html"), positionJavaOnlineProject);
+        List<Company.Position> positionWrike = new ArrayList<>();
+        positionWrike.add(new Company.Position("Старший разработчик (backend)", "Проектирование и разработка онлайн платформы " +
+                "управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis)." +
+                " Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO." +
                 "Проектирование и разработка онлайн платформы управления проектами " +
-                        "Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis)." +
-                        " Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.");
-        List<Company> listCompany1 = new ArrayList<>();
-        listCompany1.add(company1);
-        listCompany1.add(company2);
-        CompanySection companySection1 = new CompanySection(listCompany1);
-        Company company3 = new Company("Coursera", "Coursera.html", LocalDate.of(2013, 03, 1), LocalDate.of(2013, 05, 31),
-                "\"Functional Programming Principles in Scala\" by Martin Odersky", "");
-        Company company4 = new Company("Luxoft", "Luxoft.html", LocalDate.of(2011, 03, 1), LocalDate.of(2011, 04, 30),
-                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"", "");
+                "Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis)." +
+                " Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.",
+                LocalDate.of(2014, 10, 2), LocalDate.of(2016, 1, 31)));
+        positionWrike.add(new Company.Position("Java архитектор", "Организация процесса разработки системы ERP для " +
+                "разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы " +
+                "(кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД" +
+                " и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), " +
+                "сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online" +
+                " редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons," +
+                " Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell " +
+                "remote scripting via ssh tunnels, PL/Python",
+                LocalDate.of(2012, 4, 1), LocalDate.of(2014, 10, 1)));
+        Company companyWrike = new Company(new Link("Wrike", "wrike.html"), positionWrike);
+        List<Company.Position> positionYota = new ArrayList<>();
+        positionYota.add(new Company.Position("Ведущий специалист", "Дизайн и имплементация Java EE фреймворка для отдела \"Платежные Системы\"" +
+                " (GlassFish v2.1, v3, OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, JSP, JMX, JMS, Maven2). Реализация администрирования," +
+                " статистики и мониторинга фреймворка. Разработка online JMX клиента " +
+                "(Python/ Jython, Django, ExtJS)", LocalDate.of(2008, 6, 1), LocalDate.of(2010, 12, 1)));
+        Company companyYota = new Company(new Link("Yota", "Yota.html"), positionYota);
 
         List<Company> listCompany2 = new ArrayList<>();
-        listCompany2.add(company3);
-        listCompany2.add(company4);
-        CompanySection companySection2 = new CompanySection(listCompany2);
+        listCompany2.add(companyJavaOnlineProject);
+        listCompany2.add(companyWrike);
+        listCompany2.add(companyYota);
+        CompanySection companySection1 = new CompanySection(listCompany2);
 
+        List<Company.Position> positionCoursera = new ArrayList<>();
+        positionCoursera.add(new Company.Position("\"Functional Programming Principles in Scala\" by Martin Odersky", "",
+                LocalDate.of(2013, 3, 1), LocalDate.of(2013, 5, 1)));
+        Company companyCoursera = new Company(new Link("Coursera", "Coursera.html"), positionCoursera);
+
+        List<Company.Position> positionUniv = new ArrayList<>();
+        positionUniv.add(new Company.Position("Аспирантура (программист С, С++)", "",
+                LocalDate.of(1993, 9, 1), LocalDate.of(1996, 7, 1)));
+        positionUniv.add(new Company.Position("Инженер (программист Fortran, C))", "",
+                LocalDate.of(1987, 9, 1), LocalDate.of(1993, 7, 1)));
+        Company companyUniv = new Company(new Link("Санкт-Петербургский национальный исследовательский университет" +
+                " информационных технологий, механики и оптики", "Pietari.html"), positionUniv);
+
+        List<Company> listCompany3 = new ArrayList<>();
+        listCompany3.add(companyCoursera);
+        listCompany3.add(companyUniv);
+        CompanySection companySection2 = new CompanySection(listCompany3);
 
         r.mapSections.put(SectionType.OBJECTIVE, simple1);
         r.mapSections.put(SectionType.PERSONAL, simple2);
