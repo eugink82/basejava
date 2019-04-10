@@ -24,8 +24,10 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected List<Resume> getCopyList() {
         File[] files = directory.listFiles();
         List<Resume> listResume = new ArrayList<>();
-        for (File f : files) {
-            listResume.add(doRead(f));
+        if(files!=null) {
+            for (File f : files) {
+                listResume.add(doRead(f));
+            }
         }
         return new ArrayList<>(listResume);
     }
@@ -42,7 +44,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected Resume getResume(File file) {
-        return doRead(file);
+      try {
+          return doRead(file);
+      } catch (Exception e){
+          throw new StorageException("Error to get file Resume",file.getName(),e);
+      }
     }
 
 
@@ -53,6 +59,16 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         } catch (IOException e) {
             throw new StorageException("I/O Error", file.getName(), e);
         }
+    }
+
+    @Override
+    protected void deleteResume(File file) {
+       try {
+           file.delete();
+       }
+       catch(Exception e) {
+           throw new StorageException("Error to delete file Resume", file.getName(),e);
+       }
     }
 
     @Override
@@ -69,20 +85,29 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     protected abstract Resume doRead(File file);
 
-    @Override
-    protected void deleteResume(File file) {
-        file.delete();
-    }
+
 
     @Override
     public void clear() {
         File[] files = directory.listFiles();
-        for (File file : files)
-            file.delete();
+        if(files!=null) {
+            for (File file : files) {
+                file.delete();
+            }
+        }
     }
 
     @Override
     public int size() {
-        return (int) directory.length();
+        File[] files=directory.listFiles();
+        int count=0;
+        if(files!=null){
+            for(File file: files){
+                if(file.isFile()){
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 }

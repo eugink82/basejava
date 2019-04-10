@@ -3,18 +3,7 @@ package com.urise.webapp;
 import java.io.*;
 
 public class MainFile {
-    public static void findFiles(File file,PrintStream output) throws IOException{
-        if(file.isDirectory()){
-            File[] files=file.listFiles();
-            if(files!=null) {
-                for (int i=0;i<files.length;i++) {
-                    findFiles(files[i], output);
-                }
-            }
-        } else {
-            output.println("\t" + file.getCanonicalPath());
-        }
-    }
+
     public static void main(String[] args) {
 //        String filePath = ".\\.gitignore";
 //        File file = new File(filePath);
@@ -39,11 +28,24 @@ public class MainFile {
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
-        File pathFile=new File(".\\src");
+        File pathFile = new File(".\\src");
         try {
-            findFiles(pathFile,System.out);
+            findFiles(pathFile);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void findFiles(File file) throws IOException {
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    findFiles(f);
+                }
+            }
+        } else {
+            System.out.println("\t" + file.getName());
         }
     }
 }
