@@ -1,80 +1,109 @@
 package com.urise.webapp.model;
 
-import java.time.LocalDate;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import com.urise.webapp.util.*;
 
 public class Company {
     private final Link homepage;
-    private final List<Position> position;
+    private List<Position> positions=new ArrayList<>();
+
+    public Company(String name, String url, Position... positions){
+        this(new Link(name, url), Arrays.asList(positions));
+    }
 
     public Company(Link homepage, List<Position> position) {
         this.homepage = homepage;
-        this.position = position;
-        //        this.startWork = startWork;
-//        this.endWork = endWork;
-//        this.position = position;
-//        this.description = description;
+        this.positions = position;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Company company = (Company) o;
+        return Objects.equals(homepage, company.homepage) &&
+                Objects.equals(positions, company.positions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(homepage, positions);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Position p : position)
+        for (Position p : positions)
             sb.append(p.toString()).append(System.lineSeparator());
 
         return homepage.getName() + System.lineSeparator() + sb.toString();
-//        return "Company{" +
-//                "homepage=" + homepage +
-//                ", position=" + position +
-//                '}';
     }
 
     public static class Position {
-        private final String position;
+        private final String title;
         private final String description;
-        private final LocalDate startWork;
-        private final LocalDate endWork;
+        private final LocalDate startDate;
+        private final LocalDate endDate;
 
-        public Position(String position, String description, LocalDate startWork, LocalDate endWork) {
-            Objects.requireNonNull(position, "Позиция работы, учебы не должно быть пустым");
-            Objects.requireNonNull(startWork, "Начало работы не должно быть пустым");
-            Objects.requireNonNull(endWork, "Конец работы не должно быть пустым");
-
-            this.position = position;
-            this.description = description;
-            this.startWork = startWork;
-            this.endWork = endWork;
+        public Position(String title, String description, int startYear, Month startMonth){
+            this(title,description,DateUtil.of(startYear,startMonth),DateUtil.NOW);
         }
 
-        public String getPosition() {
-            return position;
+        public Position(String title, String description, int startYear, Month startMonth, int endYear, Month endMonth){
+            this(title,description,DateUtil.of(startYear,startMonth),DateUtil.of(endYear,endMonth));
+        }
+
+        public Position(String title, String description, LocalDate startDate, LocalDate endDate) {
+            Objects.requireNonNull(title, "Позиция работы, учебы не должно быть пустым");
+            Objects.requireNonNull(startDate, "Начало работы не должно быть пустым");
+            Objects.requireNonNull(endDate, "Конец работы не должно быть пустым");
+
+            this.title = title;
+            this.description = description;
+            this.startDate = startDate;
+            this.endDate = endDate;
+        }
+
+        public String getTitle() {
+            return title;
         }
 
         public String getDescription() {
             return description;
         }
 
-        public LocalDate getStartWork() {
-            return startWork;
+        public LocalDate getStartDate() {
+            return startDate;
         }
 
-        public LocalDate getEndWork() {
-            return endWork;
+        public LocalDate getEndDate() {
+            return endDate;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Position position = (Position) o;
+            return Objects.equals(title, position.title) &&
+                    Objects.equals(description, position.description) &&
+                    Objects.equals(startDate, position.startDate) &&
+                    Objects.equals(endDate, position.endDate);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(title, description, startDate, endDate);
         }
 
         @Override
         public String toString() {
             String datePattern = "MM/yyyy";
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePattern);
-            return dateFormatter.format(startWork) + "-" + dateFormatter.format(endWork) + "  " +
-                    position + System.lineSeparator() + "                 " + description;
-//            return "Position{" +
-//                    "position='" + position + '\'' + System.lineSeparator()+
-//                    ", description='" + description + '\'' +System.lineSeparator()+
-//                    ", startWork=" + startWork +System.lineSeparator()+
-//                    ", endWork=" + endWork +System.lineSeparator()+
-//                    '}';
+            return dateFormatter.format(startDate) + "-" + dateFormatter.format(endDate) + "  " +
+                    title + System.lineSeparator() + "                 " + description;
         }
     }
 }

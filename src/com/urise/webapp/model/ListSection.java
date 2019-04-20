@@ -1,24 +1,29 @@
 package com.urise.webapp.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class ListSection implements Sections {
-    private final List<String> list;
+    private final List<String> items;
 
-    public ListSection(List<String> list) {
-        Objects.requireNonNull(list, "список секций не должен быть пустым");
-        this.list = list;
+    public ListSection(String... items){
+        this(Arrays.asList(items));
+    }
+
+    public ListSection(List<String> items) {
+        Objects.requireNonNull(items, "список секций не должен быть пустым");
+        this.items = items;
     }
 
     public List<String> getList() {
-        return list;
+        return items;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (String section : list)
+        for (String section : items)
             sb.append("-").append(section).append(System.lineSeparator());
         return sb.toString();
     }
@@ -30,11 +35,11 @@ public class ListSection implements Sections {
 
         ListSection that = (ListSection) o;
 
-        return list.equals(that.list);
+        return items.equals(that.items);
     }
 
     @Override
     public int hashCode() {
-        return list.hashCode();
+        return items.hashCode();
     }
 }

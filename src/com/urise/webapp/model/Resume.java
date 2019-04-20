@@ -1,8 +1,6 @@
 package com.urise.webapp.model;
 
 import java.util.*;
-import java.io.*;
-import java.util.Map.Entry;
 
 /**
  * Initial resume class
@@ -12,8 +10,8 @@ public class Resume implements Comparable<Resume> {
     // Unique identifier
     private final String uuid;
     private final String fullName;
-    public Map<SectionType, Sections> mapSections = new EnumMap<>(SectionType.class);
-    public Map<ContactType, String> mapContacts = new EnumMap<>(ContactType.class);
+    public Map<SectionType, Sections> sections = new EnumMap<>(SectionType.class);
+    public Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -35,13 +33,20 @@ public class Resume implements Comparable<Resume> {
     }
 
     public Sections getSection(SectionType s) {
-        return mapSections.get(s);
+        return sections.get(s);
     }
 
     public String getContact(ContactType cType) {
-        return mapContacts.get(cType);
+        return contacts.get(cType);
     }
 
+    public void addSection(SectionType type, Sections section) {
+        sections.put(type,section);
+    }
+
+    public void addContact(ContactType type, String value) {
+        contacts.put(type, value);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -50,18 +55,14 @@ public class Resume implements Comparable<Resume> {
 
         Resume resume = (Resume) o;
 
-        if (uuid != null ? !uuid.equals(resume.uuid) : resume.uuid != null) return false;
-        if (fullName != null ? !fullName.equals(resume.fullName) : resume.fullName != null) return false;
-        if (mapSections != null ? !mapSections.equals(resume.mapSections) : resume.mapSections != null) return false;
-        return mapContacts != null ? mapContacts.equals(resume.mapContacts) : resume.mapContacts == null;
+        if (!uuid.equals(resume.uuid)) return false;
+        return fullName.equals(resume.fullName);
     }
 
     @Override
     public int hashCode() {
-        int result = uuid != null ? uuid.hashCode() : 0;
-        result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
-        result = 31 * result + (mapSections != null ? mapSections.hashCode() : 0);
-        result = 31 * result + (mapContacts != null ? mapContacts.hashCode() : 0);
+        int result = uuid.hashCode();
+        result = 31 * result + fullName.hashCode();
         return result;
     }
 

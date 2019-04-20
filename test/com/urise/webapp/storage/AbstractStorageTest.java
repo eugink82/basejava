@@ -3,13 +3,14 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
-import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import java.time.Month;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -23,10 +24,41 @@ public class AbstractStorageTest {
     private static final String UUID_3 = "uuid3";
     private static final String NEW_UUID = "abrakadabra";
 
-    private static final Resume RESUME1 = new Resume(UUID_1, "Ivanov");
-    private static final Resume RESUME2 = new Resume(UUID_2, "Sidorov");
-    private static final Resume RESUME3 = new Resume(UUID_3, "Murzabekov");
-    private static final Resume NEW_RESUME = new Resume(NEW_UUID, "Konoplev Vladimir");
+    private static final Resume RESUME1;
+    private static final Resume RESUME2;
+    private static final Resume RESUME3;
+    private static final Resume NEW_RESUME;
+
+    static{
+        RESUME1 = new Resume(UUID_1, "Ivanov");
+        RESUME2 = new Resume(UUID_2, "Sidorov");
+        RESUME3 = new Resume(UUID_3, "Murzabekov");
+        NEW_RESUME = new Resume(NEW_UUID, "Konoplev");
+        RESUME1.addContact(ContactType.EMAIL,"testmail@ya.ru");
+        RESUME1.addContact(ContactType.PHONE,"9999999");
+        RESUME1.addSection(SectionType.OBJECTIVE, new SimpleTextSection("Objective1"));
+        RESUME1.addSection(SectionType.PERSONAL,new SimpleTextSection("Personal data"));
+        RESUME1.addSection(SectionType.ACHIEVEMENT, new ListSection("Achievment11","Achievment12","Achievment13"));
+        RESUME1.addSection(SectionType.QUALIFICATIONS,new ListSection("Java","SQL","JavaScript"));
+        RESUME1.addSection(SectionType.EXPERIENCE,
+                    new CompanySection(
+                            new Company("Company11","http://Company11.ru",
+                                    new Company.Position("position1","content1",2005, Month.JANUARY),
+                                    new Company.Position("position2","content2",2001,Month.MARCH,2005,Month.JANUARY))));
+        RESUME1.addSection(SectionType.EDUCATION,
+                    new CompanySection(
+                            new Company("Institute",null,
+                                    new Company.Position("asspirant",null,2001,Month.MARCH,2005,Month.JANUARY),
+                                    new Company.Position("student","It fakultet",1996,Month.SEPTEMBER,2000,Month.DECEMBER)),
+                            new Company("Company12","http://Company12.ru")));
+        RESUME2.addContact(ContactType.SKYPE,"skype11");
+        RESUME2.addContact(ContactType.PHONE,"222222");
+        RESUME2.addSection(SectionType.EXPERIENCE,
+                new CompanySection(
+                        new Company("Company2","http://Company2.ru",
+                                new Company.Position("position1","content1",2015, Month.JANUARY)
+                               )));
+    }
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;

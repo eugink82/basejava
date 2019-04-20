@@ -14,10 +14,10 @@ public class ResumeTestData {
         Resume r = new Resume("Григорий Кислин");
         //  r.addContacts();
         //  r.printContacts();
-        r.mapContacts.put(ContactType.SKYPE, "grigory.kislin");
-        r.mapContacts.put(ContactType.EMAIL, "gkislin@yandex.ru");
-        r.mapContacts.put(ContactType.PROFILE, "https://github.com/gkislin");
-        r.mapContacts.put(ContactType.PHONE, "http://gkislin.ru/");
+        r.contacts.put(ContactType.SKYPE, "grigory.kislin");
+        r.contacts.put(ContactType.EMAIL, "gkislin@yandex.ru");
+        r.contacts.put(ContactType.PROFILE, "https://github.com/gkislin");
+        r.contacts.put(ContactType.PHONE, "http://gkislin.ru/");
 
         SimpleTextSection simple1 = new SimpleTextSection("Ведущий стажировок и корпоративного обучения " +
                 "по Java Web и Enterprise технологиям");
@@ -101,21 +101,21 @@ public class ResumeTestData {
         listCompany3.add(companyUniv);
         CompanySection companySection2 = new CompanySection(listCompany3);
 
-        r.mapSections.put(SectionType.OBJECTIVE, simple1);
-        r.mapSections.put(SectionType.PERSONAL, simple2);
-        r.mapSections.put(SectionType.ACHIEVEMENT, listSection1);
-        r.mapSections.put(SectionType.QUALIFICATIONS, listSection2);
-        r.mapSections.put(SectionType.EXPERIENCE, companySection1);
-        r.mapSections.put(SectionType.EDUCATION, companySection2);
+        r.sections.put(SectionType.OBJECTIVE, simple1);
+        r.sections.put(SectionType.PERSONAL, simple2);
+        r.sections.put(SectionType.ACHIEVEMENT, listSection1);
+        r.sections.put(SectionType.QUALIFICATIONS, listSection2);
+        r.sections.put(SectionType.EXPERIENCE, companySection1);
+        r.sections.put(SectionType.EDUCATION, companySection2);
 
         System.out.println(r.getFullName());
         System.out.println();
-        for (Map.Entry<ContactType, String> m : r.mapContacts.entrySet()) {
+        for (Map.Entry<ContactType, String> m : r.contacts.entrySet()) {
             System.out.println(m.getKey() + ": " + m.getValue());
         }
         System.out.println("__________________________________________________________________");
 
-        for (Map.Entry<SectionType, Sections> m : r.mapSections.entrySet()) {
+        for (Map.Entry<SectionType, Sections> m : r.sections.entrySet()) {
             SectionType s = null;
             if (m.getKey() != s) {
                 System.out.println();

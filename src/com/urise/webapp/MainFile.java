@@ -28,9 +28,13 @@ public class MainFile {
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
+
+        System.out.println("-------------------------------");
+        System.out.println("Recursive bypass file");
+
         File pathFile = new File(".\\src");
         try {
-            findFiles(pathFile);
+            printDirectoryAndFiles(pathFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,11 +45,28 @@ public class MainFile {
             File[] files = file.listFiles();
             if (files != null) {
                 for (File f : files) {
+                    System.out.println("Directory: " + file.getName());
                     findFiles(f);
                 }
             }
         } else {
-            System.out.println("\t" + file.getName());
+            System.out.println("File: " + file.getName());
+        }
+    }
+
+    private static void printDirectoryAndFiles(File dir) throws IOException{
+        File[] files=dir.listFiles();
+
+        if(files!=null){
+            for(File file: files){
+                if(file.isFile()){
+                    System.out.println("File:"+file.getName());
+                }
+                else if(file.isDirectory()){
+                    System.out.println("Directory:"+file.getName());
+                    printDirectoryAndFiles(file);
+                }
+            }
         }
     }
 }
