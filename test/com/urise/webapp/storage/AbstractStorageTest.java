@@ -74,7 +74,7 @@ public class AbstractStorageTest {
     public void save() {
         storage.save(NEW_RESUME);
         Assert.assertEquals(4, storage.size());
-        Assert.assertEquals(NEW_RESUME, storage.get(NEW_UUID)); //ранее был метод Assert.assertSame, при нем тест ObjectStreamStorageTest не проходит
+        Assert.assertEquals(NEW_RESUME, storage.get(NEW_UUID)); //ранее был метод Assert.assertSame, при нем тест ObjectStreamFileStorageTest не проходит
     }
 
     @Test(expected = ExistStorageException.class)

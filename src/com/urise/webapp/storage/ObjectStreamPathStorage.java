@@ -2,20 +2,15 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
-import java.nio.file.*;
-
 import java.io.*;
+import java.util.logging.*;
 
-
-public class ObjectStreamPathStorage  extends AbstractPathStorage {
-
-    public ObjectStreamPathStorage(String directory) {
-        super(directory);
-    }  //23.04.2019
-
+public class ObjectStreamPathStorage implements FileOrPathSerialization {
+ private static final Logger LOG=Logger.getLogger(ObjectStreamPathStorage.class.getName());
 
     @Override
     public void doWrite(Resume resume, OutputStream os) throws IOException {
+      LOG.info("Cериализация с "+ObjectStreamPathStorage.class.getSimpleName());
       try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
             oos.writeObject(resume);
         }

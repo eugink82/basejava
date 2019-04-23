@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class ListSection implements Sections {
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     private final List<String> items;
 
-    public ListSection(String... items){
+    public ListSection(String... items) {
         this(Arrays.asList(items));
     }
 

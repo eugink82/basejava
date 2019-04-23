@@ -2,18 +2,15 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
-
 import java.io.*;
+import java.util.logging.*;
 
-public class ObjectStreamStorage extends AbstractFileStorage {
-
-
-    public ObjectStreamStorage(File directory) {
-        super(directory);
-    }
+public class ObjectStreamFileStorage implements FileOrPathSerialization {
+    private static final Logger LOG=Logger.getLogger(ObjectStreamFileStorage.class.getName());
 
     @Override
     public void doWrite(Resume resume, OutputStream os) throws IOException {
+        LOG.info("Cериализация с "+ObjectStreamFileStorage.class.getSimpleName());
         try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
             oos.writeObject(resume);
         }

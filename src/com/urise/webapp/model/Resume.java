@@ -7,7 +7,7 @@ import java.util.*;
  * Initial resume class
  */
 public class Resume implements Comparable<Resume>, Serializable {
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     // Unique identifier
     private final String uuid;
@@ -43,7 +43,7 @@ public class Resume implements Comparable<Resume>, Serializable {
     }
 
     public void addSection(SectionType type, Sections section) {
-        sections.put(type,section);
+        sections.put(type, section);
     }
 
     public void addContact(ContactType type, String value) {

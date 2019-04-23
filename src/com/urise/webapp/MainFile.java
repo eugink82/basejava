@@ -5,36 +5,14 @@ import java.io.*;
 public class MainFile {
 
     public static void main(String[] args) {
-//        String filePath = ".\\.gitignore";
-//        File file = new File(filePath);
-//        try {
-//            System.out.println(file.getCanonicalPath());
-//        } catch (IOException e) {
-//            throw new RuntimeException("Error", e);
-//        }
-//        File dir = new File("./src/com/urise/webapp");
-//        System.out.println(dir.isDirectory());
-//        File[] files = dir.listFiles();
-//        if (files != null) {
-//            for (File f : files) {
-//                if (f.isDirectory())
-//                    System.out.println("Директория: " + f);
-//                else
-//                    System.out.println("Файл: " + f);
-//            }
-//        }
-//        try (FileInputStream fis = new FileInputStream(filePath)) {
-//            fis.read();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+
 
         System.out.println("-------------------------------");
         System.out.println("Recursive bypass file");
 
         File pathFile = new File(".\\src");
         try {
-            printDirectoryAndFiles(pathFile);
+            printDirectoryAndFiles(pathFile,"");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,17 +32,18 @@ public class MainFile {
         }
     }
 
-    private static void printDirectoryAndFiles(File dir) throws IOException{
+    private static void printDirectoryAndFiles(File dir, String against) throws IOException{
         File[] files=dir.listFiles();
 
         if(files!=null){
             for(File file: files){
                 if(file.isFile()){
-                    System.out.println("File:"+file.getName());
+                    System.out.println(against+" File:"+file.getName());
                 }
                 else if(file.isDirectory()){
-                    System.out.println("Directory:"+file.getName());
-                    printDirectoryAndFiles(file);
+                    System.out.println(against+"Directory:"+file.getName());
+                    against=against.concat(" ");
+                    printDirectoryAndFiles(file,against);
                 }
             }
         }

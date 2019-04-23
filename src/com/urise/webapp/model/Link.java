@@ -3,8 +3,8 @@ package com.urise.webapp.model;
 import java.util.*;
 import java.io.*;
 
-public class Link implements Serializable{
-    private static final long serialVersionUID=1L;
+public class Link implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final String name;
     private final String url;

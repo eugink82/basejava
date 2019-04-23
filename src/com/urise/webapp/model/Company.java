@@ -4,15 +4,16 @@ import java.io.Serializable;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
 import com.urise.webapp.util.*;
 
 public class Company implements Serializable {
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     private final Link homepage;
-    private List<Position> positions=new ArrayList<>();
+    private List<Position> positions = new ArrayList<>();
 
-    public Company(String name, String url, Position... positions){
+    public Company(String name, String url, Position... positions) {
         this(new Link(name, url), Arrays.asList(positions));
     }
 
@@ -44,20 +45,20 @@ public class Company implements Serializable {
         return homepage.getName() + System.lineSeparator() + sb.toString();
     }
 
-    public static class Position implements Serializable{
-        private static final long serialVersionUID=1L;
+    public static class Position implements Serializable {
+        private static final long serialVersionUID = 1L;
 
         private final String title;
         private final String description;
         private final LocalDate startDate;
         private final LocalDate endDate;
 
-        public Position(String title, String description, int startYear, Month startMonth){
-            this(title,description,DateUtil.of(startYear,startMonth),DateUtil.NOW);
+        public Position(String title, String description, int startYear, Month startMonth) {
+            this(title, description, DateUtil.of(startYear, startMonth), DateUtil.NOW);
         }
 
-        public Position(String title, String description, int startYear, Month startMonth, int endYear, Month endMonth){
-            this(title,description,DateUtil.of(startYear,startMonth),DateUtil.of(endYear,endMonth));
+        public Position(String title, String description, int startYear, Month startMonth, int endYear, Month endMonth) {
+            this(title, description, DateUtil.of(startYear, startMonth), DateUtil.of(endYear, endMonth));
         }
 
         public Position(String title, String description, LocalDate startDate, LocalDate endDate) {
