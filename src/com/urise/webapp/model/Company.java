@@ -1,11 +1,14 @@
 package com.urise.webapp.model;
 
+import java.io.Serializable;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import com.urise.webapp.util.*;
 
-public class Company {
+public class Company implements Serializable {
+    private static final long serialVersionUID=1L;
+
     private final Link homepage;
     private List<Position> positions=new ArrayList<>();
 
@@ -41,7 +44,9 @@ public class Company {
         return homepage.getName() + System.lineSeparator() + sb.toString();
     }
 
-    public static class Position {
+    public static class Position implements Serializable{
+        private static final long serialVersionUID=1L;
+
         private final String title;
         private final String description;
         private final LocalDate startDate;

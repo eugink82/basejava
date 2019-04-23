@@ -7,7 +7,8 @@ import java.io.*;
 import java.util.*;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
-    private File directory;
+
+      private File directory;
 
     public AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "Директория не должна быть пустой");
@@ -20,16 +21,17 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         this.directory = directory;
     }
 
+
     @Override
     protected List<Resume> getCopyList() {
         File[] files = directory.listFiles();
-        if(files==null){
-            throw new StorageException("Ошибка чтения директории",null);
+        if (files == null) {
+            throw new StorageException("Ошибка чтения директории", null);
         }
         List<Resume> listResume = new ArrayList<>(files.length);
-            for (File f : files) {
-                listResume.add(getResume(f));
-            }
+        for (File f : files) {
+            listResume.add(getResume(f));
+        }
         return listResume;
     }
 
@@ -46,7 +48,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected Resume getResume(File file) {
         try {
-            return doRead(file);
+            return doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (Exception e) {
             throw new StorageException("Error to get file Resume", file.getName(), e);
         }
@@ -56,7 +58,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void updateResume(Resume resume, File file) {
         try {
-            doWrite(resume, file);
+            doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Ошибка записи файла", resume.getUuid(), e);
         }
@@ -64,7 +66,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void deleteResume(File file) {
-        if(!file.delete()){
+        if (!file.delete()) {
             throw new StorageException("Ошибка удаления файла", file.getName());
         }
     }
@@ -73,16 +75,16 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void saveResume(Resume resume, File file) {
         try {
             file.createNewFile();
-            doWrite(resume, file);
+            doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("Не могу создать файл "+file.getAbsolutePath(), file.getName(), e);
+            throw new StorageException("Не могу создать файл " + file.getAbsolutePath(), file.getName(), e);
         }
-        updateResume(resume,file);
+        updateResume(resume, file);
     }
 
-    protected abstract void doWrite(Resume resume, File file) throws IOException;
+    protected abstract void doWrite(Resume resume, OutputStream os) throws IOException;
 
-    protected abstract Resume doRead(File file);
+    protected abstract Resume doRead(InputStream is) throws IOException;
 
 
     @Override
@@ -97,9 +99,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        String[] list=directory.list();
-        if(list==null){
-            throw new StorageException("Ошибка чтения директории",null);
+        String[] list = directory.list();
+        if (list == null) {
+            throw new StorageException("Ошибка чтения директории", null);
         }
         return list.length;
     }

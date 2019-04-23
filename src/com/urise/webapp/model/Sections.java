@@ -1,4 +1,6 @@
 package com.urise.webapp.model;
 
-public interface Sections {
+import java.io.Serializable;
+
+public interface Sections extends Serializable {
 }

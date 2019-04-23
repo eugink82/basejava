@@ -2,27 +2,26 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
-import com.urise.webapp.exception.StorageException;
+import com.urise.webapp.ResumeTestData;
 import com.urise.webapp.model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 
+import java.io.File;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 public class AbstractStorageTest {
     protected Storage storage;
+    protected static final File STORAGE_DIR=new File("C:\\basejava\\storage");
 
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
-    private static final String NEW_UUID = "abrakadabra";
+    private static final String NEW_UUID = "new_uuid";
 
     private static final Resume RESUME1;
     private static final Resume RESUME2;
@@ -30,34 +29,10 @@ public class AbstractStorageTest {
     private static final Resume NEW_RESUME;
 
     static{
-        RESUME1 = new Resume(UUID_1, "Ivanov");
-        RESUME2 = new Resume(UUID_2, "Sidorov");
-        RESUME3 = new Resume(UUID_3, "Murzabekov");
-        NEW_RESUME = new Resume(NEW_UUID, "Konoplev");
-        RESUME1.addContact(ContactType.EMAIL,"testmail@ya.ru");
-        RESUME1.addContact(ContactType.PHONE,"9999999");
-        RESUME1.addSection(SectionType.OBJECTIVE, new SimpleTextSection("Objective1"));
-        RESUME1.addSection(SectionType.PERSONAL,new SimpleTextSection("Personal data"));
-        RESUME1.addSection(SectionType.ACHIEVEMENT, new ListSection("Achievment11","Achievment12","Achievment13"));
-        RESUME1.addSection(SectionType.QUALIFICATIONS,new ListSection("Java","SQL","JavaScript"));
-        RESUME1.addSection(SectionType.EXPERIENCE,
-                    new CompanySection(
-                            new Company("Company11","http://Company11.ru",
-                                    new Company.Position("position1","content1",2005, Month.JANUARY),
-                                    new Company.Position("position2","content2",2001,Month.MARCH,2005,Month.JANUARY))));
-        RESUME1.addSection(SectionType.EDUCATION,
-                    new CompanySection(
-                            new Company("Institute",null,
-                                    new Company.Position("asspirant",null,2001,Month.MARCH,2005,Month.JANUARY),
-                                    new Company.Position("student","It fakultet",1996,Month.SEPTEMBER,2000,Month.DECEMBER)),
-                            new Company("Company12","http://Company12.ru")));
-        RESUME2.addContact(ContactType.SKYPE,"skype11");
-        RESUME2.addContact(ContactType.PHONE,"222222");
-        RESUME2.addSection(SectionType.EXPERIENCE,
-                new CompanySection(
-                        new Company("Company2","http://Company2.ru",
-                                new Company.Position("position1","content1",2015, Month.JANUARY)
-                               )));
+          RESUME1=ResumeTestData.createAndFillResume(UUID_1,"Григорий Кислин");
+          RESUME2=ResumeTestData.createAndFillResume(UUID_2,"Сидоров Антон");
+          RESUME3=ResumeTestData.createAndFillResume(UUID_3,"Мурзабеков Руслан");
+          NEW_RESUME=ResumeTestData.createAndFillResume(NEW_UUID,"Коноплев Павел");
     }
 
     protected AbstractStorageTest(Storage storage) {
@@ -87,7 +62,7 @@ public class AbstractStorageTest {
     public void update() {
         Resume resume1 = new Resume(UUID_1, "Andrei Petrov");
         storage.update(resume1);
-        Assert.assertSame(resume1, storage.get(UUID_1));
+        Assert.assertEquals(resume1,storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -99,7 +74,7 @@ public class AbstractStorageTest {
     public void save() {
         storage.save(NEW_RESUME);
         Assert.assertEquals(4, storage.size());
-        Assert.assertSame(NEW_RESUME, storage.get(NEW_UUID));
+        Assert.assertEquals(NEW_RESUME, storage.get(NEW_UUID)); //ранее был метод Assert.assertSame, при нем тест ObjectStreamStorageTest не проходит
     }
 
     @Test(expected = ExistStorageException.class)
@@ -110,7 +85,7 @@ public class AbstractStorageTest {
 
     @Test
     public void get() {
-        Assert.assertEquals(RESUME1, storage.get(UUID_1));
+        Assert.assertEquals(RESUME1, storage.get(RESUME1.getUuid()));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -140,6 +115,4 @@ public class AbstractStorageTest {
         Collections.sort(listTestResumes);
         Assert.assertEquals(listTestResumes, list);
     }
-
-
 }
