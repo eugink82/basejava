@@ -11,11 +11,11 @@ import java.nio.file.*;
 
 public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
-    private FileOrPathSerialization fileOrPathSerialization;
+    private FilePathSerialization filePathSerialization;
 
-    public PathStorage(String dir, FileOrPathSerialization fileOrPathSerialization) {
+    public PathStorage(String dir, FilePathSerialization filePathSerialization) {
         this.directory = Paths.get(dir);
-        this.fileOrPathSerialization=fileOrPathSerialization;
+        this.filePathSerialization = filePathSerialization;
         Objects.requireNonNull(directory, "Директория не должна быть пустой");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + "не является директорией или" +
@@ -47,7 +47,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume getResume(Path path) {
         try {
-            return fileOrPathSerialization.doRead(new BufferedInputStream(Files.newInputStream(path)));
+            return filePathSerialization.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (Exception e) {
             throw new StorageException("Error to get file Resume", path.getFileName().toString(), e);
         }
@@ -57,7 +57,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void updateResume(Resume resume, Path path) {
         try {
-            fileOrPathSerialization.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
+            filePathSerialization.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Ошибка записи файла", resume.getUuid(), e);
         }
@@ -77,7 +77,7 @@ public class PathStorage extends AbstractStorage<Path> {
         Path newPath = null;
         try {
             newPath = Files.createFile(path);
-            fileOrPathSerialization.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(newPath)));
+            filePathSerialization.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(newPath)));
         } catch (IOException e) {
             throw new StorageException("Не могу создать файл " + path.toAbsolutePath().toString(),
                     path.getFileName().toString(), e);

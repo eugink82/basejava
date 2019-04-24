@@ -8,9 +8,9 @@ import java.util.*;
 
 public class FileStorage extends AbstractStorage<File> {
     private File directory;
-    private FileOrPathSerialization fileOrPathSerialization;
+    private FilePathSerialization filePathSerialization;
 
-    public FileStorage(File directory, FileOrPathSerialization fileOrPathSerialization) {
+    public FileStorage(File directory, FilePathSerialization filePathSerialization) {
         Objects.requireNonNull(directory, "Директория не должна быть пустой");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " не является директорией");
@@ -19,7 +19,7 @@ public class FileStorage extends AbstractStorage<File> {
             throw new IllegalArgumentException("В " + directory.getAbsolutePath() + " нельзя прочитать/записать данные");
         }
         this.directory = directory;
-        this.fileOrPathSerialization = fileOrPathSerialization;
+        this.filePathSerialization = filePathSerialization;
     }
 
 
@@ -49,7 +49,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected Resume getResume(File file) {
         try {
-            return fileOrPathSerialization.doRead(new BufferedInputStream(new FileInputStream(file)));
+            return filePathSerialization.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (Exception e) {
             throw new StorageException("Error to get file Resume", file.getName(), e);
         }
@@ -59,7 +59,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void updateResume(Resume resume, File file) {
         try {
-            fileOrPathSerialization.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
+            filePathSerialization.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Ошибка записи файла", resume.getUuid(), e);
         }
@@ -76,16 +76,12 @@ public class FileStorage extends AbstractStorage<File> {
     protected void saveResume(Resume resume, File file) {
         try {
             file.createNewFile();
-            fileOrPathSerialization.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
+            filePathSerialization.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Не могу создать файл " + file.getAbsolutePath(), file.getName(), e);
         }
         updateResume(resume, file);
     }
-
-   // protected abstract void doWrite(Resume resume, OutputStream os) throws IOException;
-
-   // protected abstract Resume doRead(InputStream is) throws IOException;
 
 
     @Override

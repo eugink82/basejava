@@ -12,7 +12,7 @@ public class MainFile {
 
         File pathFile = new File(".\\src");
         try {
-            printDirectoryAndFiles(pathFile,"");
+            printDirectoriesFiles(pathFile, "");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -32,18 +32,17 @@ public class MainFile {
         }
     }
 
-    private static void printDirectoryAndFiles(File dir, String against) throws IOException{
-        File[] files=dir.listFiles();
+    private static void printDirectoriesFiles(File dir, String against) throws IOException {
+        File[] files = dir.listFiles();
 
-        if(files!=null){
-            for(File file: files){
-                if(file.isFile()){
-                    System.out.println(against+" File:"+file.getName());
-                }
-                else if(file.isDirectory()){
-                    System.out.println(against+"Directory:"+file.getName());
-                    against=against.concat(" ");
-                    printDirectoryAndFiles(file,against);
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    System.out.println(against + " File:" + file.getName());
+                } else if (file.isDirectory()) {
+                    System.out.println(against + "Directory:" + file.getName());
+                    against = against.concat(" ");
+                    printDirectoriesFiles(file, against);
                 }
             }
         }
