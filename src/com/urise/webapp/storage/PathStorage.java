@@ -85,9 +85,6 @@ public class PathStorage extends AbstractStorage<Path> {
         updateResume(resume, newPath);
     }
 
-    //protected abstract void doWrite(Resume resume, OutputStream os) throws IOException;
-
-    //protected abstract Resume doRead(InputStream is) throws IOException;
 
 
     @Override
