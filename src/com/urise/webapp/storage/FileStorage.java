@@ -2,15 +2,16 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.serializer.StorageStrategy;
 
 import java.io.*;
 import java.util.*;
 
 public class FileStorage extends AbstractStorage<File> {
     private File directory;
-    private FilePathSerialization filePathSerialization;
+    private StorageStrategy storageStrategy;
 
-    public FileStorage(File directory, FilePathSerialization filePathSerialization) {
+    public FileStorage(File directory, StorageStrategy storageStrategy) {
         Objects.requireNonNull(directory, "Директория не должна быть пустой");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " не является директорией");
@@ -19,7 +20,7 @@ public class FileStorage extends AbstractStorage<File> {
             throw new IllegalArgumentException("В " + directory.getAbsolutePath() + " нельзя прочитать/записать данные");
         }
         this.directory = directory;
-        this.filePathSerialization = filePathSerialization;
+        this.storageStrategy = storageStrategy;
     }
 
 
@@ -27,7 +28,7 @@ public class FileStorage extends AbstractStorage<File> {
     protected List<Resume> getCopyList() {
         File[] files = directory.listFiles();
         if (files == null) {
-            throw new StorageException("Ошибка чтения директории", null);
+            throw new StorageException("Ошибка чтения директории");
         }
         List<Resume> listResume = new ArrayList<>(files.length);
         for (File f : files) {
@@ -49,7 +50,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected Resume getResume(File file) {
         try {
-            return filePathSerialization.doRead(new BufferedInputStream(new FileInputStream(file)));
+            return storageStrategy.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (Exception e) {
             throw new StorageException("Error to get file Resume", file.getName(), e);
         }
@@ -59,7 +60,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void updateResume(Resume resume, File file) {
         try {
-            filePathSerialization.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
+            storageStrategy.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Ошибка записи файла", resume.getUuid(), e);
         }
@@ -76,7 +77,7 @@ public class FileStorage extends AbstractStorage<File> {
     protected void saveResume(Resume resume, File file) {
         try {
             file.createNewFile();
-            filePathSerialization.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
+            storageStrategy.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Не могу создать файл " + file.getAbsolutePath(), file.getName(), e);
         }
@@ -98,7 +99,7 @@ public class FileStorage extends AbstractStorage<File> {
     public int size() {
         String[] list = directory.list();
         if (list == null) {
-            throw new StorageException("Ошибка чтения директории", null);
+            throw new StorageException("Ошибка чтения директории");
         }
         return list.length;
     }

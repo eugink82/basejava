@@ -1,4 +1,4 @@
-package com.urise.webapp.storage;
+package com.urise.webapp.storage.serializer;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
@@ -6,12 +6,12 @@ import com.urise.webapp.model.Resume;
 import java.io.*;
 import java.util.logging.*;
 
-public class ObjectStreamStorage implements FilePathSerialization {
-    private static final Logger LOG = Logger.getLogger(ObjectStreamStorage.class.getName());
+public class ObjectStreamSerializer implements StorageStrategy {
+    private static final Logger LOG = Logger.getLogger(ObjectStreamSerializer.class.getName());
 
     @Override
     public void doWrite(Resume resume, OutputStream os) throws IOException {
-        LOG.info("Cериализация с " + ObjectStreamStorage.class.getSimpleName());
+        LOG.info("Cериализация с " + ObjectStreamSerializer.class.getSimpleName());
         try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
             oos.writeObject(resume);
         }

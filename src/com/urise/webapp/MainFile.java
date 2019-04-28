@@ -10,7 +10,7 @@ public class MainFile {
         System.out.println("-------------------------------");
         System.out.println("Recursive bypass file");
 
-        File pathFile = new File(".\\src");
+        File pathFile = new File(".\\src\\com\\urise");
         try {
             printDirectoriesFiles(pathFile, "");
         } catch (IOException e) {
@@ -38,11 +38,11 @@ public class MainFile {
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
-                    System.out.println(against + " File:" + file.getName());
+                    System.out.println(against + "F: " + file.getName());
                 } else if (file.isDirectory()) {
-                    System.out.println(against + "Directory:" + file.getName());
+                    System.out.println(against + "D: " + file.getName());
                     against = against.concat(" ");
-                    printDirectoriesFiles(file, against);
+                    printDirectoriesFiles(file, against+"  ");
                 }
             }
         }

@@ -2,21 +2,23 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.serializer.StorageStrategy;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.nio.file.*;
+import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
-    private FilePathSerialization filePathSerialization;
+    private StorageStrategy storageStrategy;
 
-    public PathStorage(String dir, FilePathSerialization filePathSerialization) {
+    public PathStorage(String dir, StorageStrategy storageStrategy) {
+        Objects.requireNonNull(dir, "Директория не должна быть пустой");
         this.directory = Paths.get(dir);
-        this.filePathSerialization = filePathSerialization;
-        Objects.requireNonNull(directory, "Директория не должна быть пустой");
+        this.storageStrategy = storageStrategy;
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + "не является директорией или" +
                     " нельзя записать данные");
@@ -26,30 +28,26 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected List<Resume> getCopyList() {
         List<Resume> listResume = new ArrayList<>();
-        try {
-            Files.list(directory).forEach((i) -> listResume.add(getResume(i)));
-        } catch (IOException e) {
-            throw new StorageException("Ошибка чтения директории", null);
-        }
+        getFilesList().forEach((i) -> listResume.add(getResume(i)));
         return listResume;
     }
 
     @Override
     protected Path getSearchKey(String uuid) {
-        return Paths.get(directory + "\\" + uuid);
+        return directory.resolve(uuid);
     }
 
     @Override
     protected boolean isExists(Path path) {
-        return Files.exists(path);
+        return Files.isRegularFile(path);
     }
 
     @Override
     protected Resume getResume(Path path) {
         try {
-            return filePathSerialization.doRead(new BufferedInputStream(Files.newInputStream(path)));
+            return storageStrategy.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (Exception e) {
-            throw new StorageException("Error to get file Resume", path.getFileName().toString(), e);
+            throw new StorageException("Error to get file Resume", getFileName(path), e);
         }
     }
 
@@ -57,7 +55,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void updateResume(Resume resume, Path path) {
         try {
-            filePathSerialization.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
+            storageStrategy.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Ошибка записи файла", resume.getUuid(), e);
         }
@@ -68,40 +66,43 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            throw new StorageException("Ошибка удаления файла", path.getFileName().toString());
+            throw new StorageException("Ошибка удаления файла", getFileName(path));
         }
     }
 
     @Override
     protected void saveResume(Resume resume, Path path) {
-        Path newPath = null;
         try {
-            newPath = Files.createFile(path);
-            filePathSerialization.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(newPath)));
+            Files.createFile(path);
         } catch (IOException e) {
-            throw new StorageException("Не могу создать файл " + path.toAbsolutePath().toString(),
-                    path.getFileName().toString(), e);
+            throw new StorageException("Не могу создать файл " + path,
+                    getFileName(path), e);
         }
-        updateResume(resume, newPath);
+        updateResume(resume, path);
     }
 
 
 
     @Override
     public void clear() {
-        try {
-            Files.list(directory).forEach(this::deleteResume);
-        } catch (IOException e) {
-            throw new StorageException("Path delete error", null);
-        }
+        getFilesList().forEach(this::deleteResume);
     }
+
 
     @Override
     public int size() {
+        return (int) getFilesList().count();
+    }
+
+    private String getFileName(Path path){
+        return path.getFileName().toString();
+    }
+
+    private Stream<Path> getFilesList()  {
         try {
-            return (int) Files.list(directory).count();
+            return Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("Ошибка чтения директории", null);
+            throw new StorageException("Ошибка чтения директории", e);
         }
     }
 }
