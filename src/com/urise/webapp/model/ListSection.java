@@ -4,10 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class ListSection implements Sections {
+public class ListSection extends Sections {
     private static final long serialVersionUID = 1L;
 
-    private final List<String> items;
+    private List<String> items;
+
+    public ListSection() {
+    }
 
     public ListSection(String... items) {
         this(Arrays.asList(items));

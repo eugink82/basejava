@@ -2,10 +2,13 @@ package com.urise.webapp.model;
 
 import java.util.*;
 
-public class SimpleTextSection implements Sections {
+public class SimpleTextSection extends Sections {
     private static final long serialVersionUID = 1L;
 
-    private final String content;
+    private String content;
+
+    public SimpleTextSection() {
+    }
 
     public SimpleTextSection(String content) {
         Objects.requireNonNull(content, "Контент не должен быть пустым");

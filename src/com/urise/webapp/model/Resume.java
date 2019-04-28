@@ -1,19 +1,25 @@
 package com.urise.webapp.model;
 
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.*;
 
 /**
  * Initial resume class
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Comparable<Resume>, Serializable {
     private static final long serialVersionUID = 1L;
 
     // Unique identifier
-    private final String uuid;
-    private final String fullName;
+    private String uuid;
+    private String fullName;
     public Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
     public Map<SectionType, Sections> sections = new EnumMap<>(SectionType.class);
+
+    public Resume() {
+    }
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -55,7 +61,7 @@ public class Resume implements Comparable<Resume>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return uuid.equals(resume.uuid) &&
+        return  uuid.equals(resume.uuid) &&
                 fullName.equals(resume.fullName) &&
                 Objects.equals(contacts, resume.contacts) &&
                 Objects.equals(sections, resume.sections);
@@ -68,10 +74,7 @@ public class Resume implements Comparable<Resume>, Serializable {
 
     @Override
     public String toString() {
-        return "Resume{" +
-                "uuid='" + uuid + '\'' +
-                ", fullName='" + fullName + '\'' +
-                '}';
+        return uuid + '(' + fullName + ')';
     }
 
     @Override

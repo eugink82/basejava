@@ -4,10 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class CompanySection implements Sections {
+public class CompanySection extends Sections {
     private static final long serialVersionUID = 1L;
 
-    private final List<Company> companies;
+    private List<Company> companies;
+
+    public CompanySection() {
+    }
 
     public CompanySection(Company... companies) {
         this(Arrays.asList(companies));
