@@ -40,12 +40,20 @@ public class Resume implements Comparable<Resume>, Serializable {
         return fullName;
     }
 
-    public Sections getSection(SectionType s) {
-        return sections.get(s);
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
+    public Map<SectionType, Sections> getSections() {
+        return sections;
     }
 
     public String getContact(ContactType cType) {
         return contacts.get(cType);
+    }
+
+    public Sections getSection(SectionType s) {
+        return sections.get(s);
     }
 
     public void addSection(SectionType type, Sections section) {
@@ -61,7 +69,7 @@ public class Resume implements Comparable<Resume>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return  uuid.equals(resume.uuid) &&
+        return uuid.equals(resume.uuid) &&
                 fullName.equals(resume.fullName) &&
                 Objects.equals(contacts, resume.contacts) &&
                 Objects.equals(sections, resume.sections);

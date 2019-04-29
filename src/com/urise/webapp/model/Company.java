@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
 import com.urise.webapp.util.*;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -12,21 +13,29 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Company implements Serializable {
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     private Link homepage;
-    private List<Position> positions=new ArrayList<>();
+    private List<Position> positions = new ArrayList<>();
 
     public Company() {
     }
 
-    public Company(String name, String url, Position... positions){
+    public Company(String name, String url, Position... positions) {
         this(new Link(name, url), Arrays.asList(positions));
     }
 
     public Company(Link homepage, List<Position> position) {
         this.homepage = homepage;
         this.positions = position;
+    }
+
+    public List<Position> getPositions() {
+        return positions;
+    }
+
+    public Link getHomepage() {
+        return homepage;
     }
 
     @Override
@@ -53,8 +62,8 @@ public class Company implements Serializable {
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Position implements Serializable{
-        private static final long serialVersionUID=1L;
+    public static class Position implements Serializable {
+        private static final long serialVersionUID = 1L;
 
         private String title;
         private String description;
@@ -66,12 +75,12 @@ public class Company implements Serializable {
         public Position() {
         }
 
-        public Position(String title, String description, int startYear, Month startMonth){
-            this(title,description,DateUtil.of(startYear,startMonth),DateUtil.NOW);
+        public Position(String title, String description, int startYear, Month startMonth) {
+            this(title, description, DateUtil.of(startYear, startMonth), DateUtil.NOW);
         }
 
-        public Position(String title, String description, int startYear, Month startMonth, int endYear, Month endMonth){
-            this(title,description,DateUtil.of(startYear,startMonth),DateUtil.of(endYear,endMonth));
+        public Position(String title, String description, int startYear, Month startMonth, int endYear, Month endMonth) {
+            this(title, description, DateUtil.of(startYear, startMonth), DateUtil.of(endYear, endMonth));
         }
 
         public Position(String title, String description, LocalDate startDate, LocalDate endDate) {
