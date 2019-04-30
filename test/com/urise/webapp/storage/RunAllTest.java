@@ -16,7 +16,9 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
                 MapResumeStorageTest.class,
                 ObjectFileStorageTest.class,
                 ObjectPathStorageTest.class,
-                XmlPathStorageTest.class
+                XmlPathStorageTest.class,
+                JsonPathStorageTest.class,
+                DataPathStorageTest.class
         }
 )
 public class RunAllTest {

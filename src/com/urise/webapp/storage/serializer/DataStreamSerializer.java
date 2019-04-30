@@ -1,11 +1,8 @@
 package com.urise.webapp.storage.serializer;
 
-import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.*;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.*;
@@ -47,7 +44,8 @@ public class DataStreamSerializer implements StorageStrategy {
                         }
                     }
                     break;
-                    case "EXPERIENCE": {
+                    case "EXPERIENCE":
+                    case "EDUCATION": {
                         List<Company> listCompanies = ((CompanySection) sections).getCompanies();
                         int count = listCompanies.size();
                         dos.writeInt(count);
@@ -61,16 +59,11 @@ public class DataStreamSerializer implements StorageStrategy {
                             for (int j = 0; j < countPositions; j++) {
                                 dos.writeUTF(listPositions.get(j).getTitle());
                                 dos.writeUTF(listPositions.get(j).getDescription());
-                                //  String patternLocalDate="yyyy-MM-dd";
-                                //   dos.writeUTF(patternLocalDate);
-                                //   dos.writeUTF(listPositions.get(i).getStartDate().format(DateTimeFormatter.ofPattern(patternLocalDate)));
-                                //  dos.writeUTF(listPositions.get(i).getEndDate().format(DateTimeFormatter.ofPattern(patternLocalDate)));
                                 dos.writeInt(listPositions.get(j).getStartDate().getYear());
                                 dos.writeInt(listPositions.get(j).getStartDate().getMonth().getValue());
                                 dos.writeInt(listPositions.get(j).getEndDate().getYear());
                                 dos.writeInt(listPositions.get(j).getEndDate().getMonth().getValue());
                             }
-
                         }
                     }
                 }
@@ -111,33 +104,45 @@ public class DataStreamSerializer implements StorageStrategy {
                     }
                     break;
                     case "EXPERIENCE": {
-                        int size = dis.readInt();
-                        List<Company> listCompany = new ArrayList<>();
-                        for (int j = 0; j < size; j++) {
-                            String nameCompany = dis.readUTF();
-                            String urlCompany = dis.readUTF();
-                            int positionCount = dis.readInt();
-                            List<Company.Position> listPosition = new ArrayList<>();
-                            for (int k = 0; k < positionCount; k++) {
-                                String titlePosition = dis.readUTF();
-                                String titleDescription = dis.readUTF();
-                                int startYear = dis.readInt();
-                                Month startMonth = getMonth(dis.readInt());
-                                int endYear = dis.readInt();
-                                Month endMonth = getMonth(dis.readInt());
-                                Company.Position positions = new Company.Position(titlePosition, titleDescription,
-                                        startYear, startMonth, endYear, endMonth);
-                                listPosition.add(positions);
-                            }
-                            resume.addSection(SectionType.EXPERIENCE, new CompanySection(
-                                    new Company(new Link(nameCompany, urlCompany), listPosition)));
-
-                        }
+                        List<Company> listCompany = getListCompanyContent(dis);
+                        resume.addSection(SectionType.EXPERIENCE, new CompanySection(
+                                listCompany));
+                    }
+                    break;
+                    case "EDUCATION": {
+                        List<Company> listCompany = getListCompanyContent(dis);
+                        resume.addSection(SectionType.EDUCATION, new CompanySection(
+                                listCompany));
                     }
                 }
             }
             return resume;
         }
+    }
+
+    private List<Company> getListCompanyContent(DataInputStream dis) throws IOException {
+        int size = dis.readInt();
+        List<Company> listCompany = new ArrayList<>();
+        for (int j = 0; j < size; j++) {
+            String nameCompany = dis.readUTF();
+            String urlCompany = dis.readUTF();
+            int positionCount = dis.readInt();
+            List<Company.Position> listPosition = new ArrayList<>();
+            for (int k = 0; k < positionCount; k++) {
+                String titlePosition = dis.readUTF();
+                String titleDescription = dis.readUTF();
+                int startYear = dis.readInt();
+                Month startMonth = getMonth(dis.readInt());
+                int endYear = dis.readInt();
+                Month endMonth = getMonth(dis.readInt());
+                Company.Position positions = new Company.Position(titlePosition, titleDescription,
+                        startYear, startMonth, endYear, endMonth);
+                listPosition.add(positions);
+            }
+            listCompany.add(new Company(new Link(nameCompany, urlCompany), listPosition));
+
+        }
+        return listCompany;
     }
 
     private List<String> getListSectionContent(DataInputStream dis) throws IOException {
