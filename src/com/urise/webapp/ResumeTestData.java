@@ -51,10 +51,10 @@ public class ResumeTestData {
                         new Company("Java Online Projects", "http://javaops.ru/",
                                 new Company.Position("Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок.",
                                         2013, Month.OCTOBER)),
-                       new Company("Wrike", "https://www.wrike.com",
+                        new Company("Wrike", "https://www.wrike.com",
                                 new Company.Position("Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.",
-                                       2014, Month.OCTOBER, 2016, Month.JANUARY)),
-                        new Company("RIT Center", "",
+                                        2014, Month.OCTOBER, 2016, Month.JANUARY)),
+                        new Company("RIT Center", null,
                                 new Company.Position("Java архитектор", "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python",
                                         2012, Month.APRIL, 2014, Month.OCTOBER)),
                         new Company("Luxoft (Deutsche Bank)", "https://www.luxoft.com/",
@@ -76,22 +76,22 @@ public class ResumeTestData {
         resume.addSection(SectionType.EDUCATION,
                 new CompanySection(
                         new Company("Coursera", "https://www.coursera.org/learn/progfun1",
-                                new Company.Position("\"Functional Programming Principles in Scala\" by Martin Odersky", "",
+                                new Company.Position("\"Functional Programming Principles in Scala\" by Martin Odersky", null,
                                         2013, Month.MARCH, 2013, Month.MAY)),
                         new Company("Luxoft", "https://www.luxoft-training.ru/training/catalog/course.html?id=22366",
-                                new Company.Position("Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"", "",
+                                new Company.Position("Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"", null,
                                         2011, Month.MARCH, 2011, Month.APRIL)),
                         new Company("Siemens AG", "https://new.siemens.com/ru/ru.html",
-                                new Company.Position("3 месяца обучения мобильным IN сетям (Берлин)", "",
+                                new Company.Position("3 месяца обучения мобильным IN сетям (Берлин)", null,
                                         2005, Month.JANUARY, 2005, Month.APRIL)),
                         new Company("Alcatel", "www.alcatel.ru",
-                                new Company.Position("6 месяцев обучения цифровым телефонным сетям (Москва)", "",
+                                new Company.Position("6 месяцев обучения цифровым телефонным сетям (Москва)", null,
                                         1997, Month.SEPTEMBER, 1998, Month.MARCH)),
                         new Company("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/ru/",
-                                new Company.Position("Аспирантура (программист С, С++)", "",
+                                new Company.Position("Аспирантура (программист С, С++)", null,
                                         1993, Month.SEPTEMBER, 1996, Month.JULY),
-                                new Company.Position("Инженер (программист Fortran, C)", "",
-                                       1987, Month.SEPTEMBER, 1993, Month.JULY))
+                                new Company.Position("Инженер (программист Fortran, C)", null,
+                                        1987, Month.SEPTEMBER, 1993, Month.JULY))
                 ));
         return resume;
     }
