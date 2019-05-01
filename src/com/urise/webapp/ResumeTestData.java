@@ -49,7 +49,7 @@ public class ResumeTestData {
         resume.addSection(SectionType.EXPERIENCE,
                 new CompanySection(
                         new Company("Java Online Projects", "http://javaops.ru/",
-                                new Company.Position("Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок.",
+                                new Company.Position("Автор проекта.", null,//"Создание, организация и проведение Java онлайн проектов и стажировок.",
                                         2013, Month.OCTOBER)),
                         new Company("Wrike", "https://www.wrike.com",
                                 new Company.Position("Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.",
@@ -82,7 +82,7 @@ public class ResumeTestData {
                                 new Company.Position("Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"", null,
                                         2011, Month.MARCH, 2011, Month.APRIL)),
                         new Company("Siemens AG", "https://new.siemens.com/ru/ru.html",
-                                new Company.Position("3 месяца обучения мобильным IN сетям (Берлин)", null,
+                                new Company.Position("3 месяца обучения мобильным IN сетям (Берлин)", "Описание",
                                         2005, Month.JANUARY, 2005, Month.APRIL)),
                         new Company("Alcatel", "www.alcatel.ru",
                                 new Company.Position("6 месяцев обучения цифровым телефонным сетям (Москва)", null,
