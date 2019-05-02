@@ -38,7 +38,7 @@ public class DataStreamSerializer implements StorageStrategy {
                     case "ACHIEVEMENT":
                     case "QUALIFICATIONS": {
                         List<String> listContent = ((ListSection) sections).getList();
-                        writeWithException(listContent, dos, elemListSection -> dos.writeUTF(elemListSection));
+                        writeWithException(listContent, dos, dos::writeUTF);
                     }
                     break;
                     case "EXPERIENCE":
@@ -65,19 +65,18 @@ public class DataStreamSerializer implements StorageStrategy {
     }
 
 
-
     @Override
     public Resume doRead(InputStream is) throws IOException {
         try (DataInputStream dis = new DataInputStream(is)) {
             Resume resume = new Resume(dis.readUTF(), dis.readUTF());
 
-            readWithException(dis,()->{
+            readWithException(dis, () -> {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             });
 
-            readWithException(dis,()->{
+            readWithException(dis, () -> {
                 String sectionName = dis.readUTF();
-                SectionType sectionType=SectionType.valueOf(sectionName);
+                SectionType sectionType = SectionType.valueOf(sectionName);
                 switch (sectionName) {
                     case "OBJECTIVE":
                     case "PERSONAL": {
@@ -102,13 +101,13 @@ public class DataStreamSerializer implements StorageStrategy {
         }
     }
 
-    private interface MyConsumerWriter<T>{
+    private interface MyConsumerWriter<T> {
         void write(T t) throws IOException;
     }
 
-    private <T> void writeWithException(Collection<T> collection, DataOutputStream dos, MyConsumerWriter<T> action) throws IOException{
+    private <T> void writeWithException(Collection<T> collection, DataOutputStream dos, MyConsumerWriter<T> action) throws IOException {
         dos.writeInt(collection.size());
-        for(T elem: collection){
+        for (T elem : collection) {
             action.write(elem);
         }
     }
@@ -117,45 +116,44 @@ public class DataStreamSerializer implements StorageStrategy {
         void read() throws IOException;
     }
 
-    private <T> void readWithException(DataInputStream dis, MyConsumerReader action) throws IOException{
-        int count=dis.readInt();
-        for(int i=0;i<count;i++){
+    private <T> void readWithException(DataInputStream dis, MyConsumerReader action) throws IOException {
+        int count = dis.readInt();
+        for (int i = 0; i < count; i++) {
             action.read();
         }
     }
 
+    private interface AddToList<T> {
+        T read() throws IOException;
+    }
+
+    private <T> List<T> readToListWithException(DataInputStream dis, AddToList<T> action) throws IOException{
+        int count=dis.readInt();
+        List<T> list=new ArrayList<>(count);
+        for(int i=0;i<count;i++){
+            list.add(action.read());
+        }
+        return list;
+    }
+
     private List<Company> getListCompanyContent(DataInputStream dis, String sectionName) throws IOException {
-        int size = dis.readInt();
-        List<Company> listCompany = new ArrayList<>();
-        for (int j = 0; j < size; j++) {
+        return readToListWithException(dis,()-> {
             String nameCompany = dis.readUTF();
             String urlCompany = dis.readUTF();
             urlCompany = (urlCompany.equals("")) ? null : urlCompany;
-            int positionCount = dis.readInt();
-            List<Company.Position> listPosition = new ArrayList<>();
-            for (int k = 0; k < positionCount; k++) {
+            return  new Company(new Link(nameCompany, urlCompany), readToListWithException(dis, () -> {
                 String titlePosition = dis.readUTF();
                 String titleDescription = dis.readUTF();
-                titleDescription=(titleDescription.equals("")) ? null : titleDescription;
+                titleDescription = (titleDescription.equals("")) ? null : titleDescription;
                 LocalDate startDate = dateSerialization(dis);
                 LocalDate endDate = dateSerialization(dis);
-                Company.Position positions = new Company.Position(titlePosition, titleDescription,
-                        startDate, endDate);
-                listPosition.add(positions);
-            }
-            listCompany.add(new Company(new Link(nameCompany, urlCompany), listPosition));
-
-        }
-        return listCompany;
+                return new Company.Position(titlePosition, titleDescription, startDate, endDate);
+            }));
+        });
     }
 
     private List<String> getListSectionContent(DataInputStream dis) throws IOException {
-        int size = dis.readInt();
-        List<String> listSection = new ArrayList<>(size);
-        for (int j = 0; j < size; j++) {
-            listSection.add(dis.readUTF());
-        }
-        return listSection;
+        return readToListWithException(dis, dis::readUTF);
     }
 
     private void dateSerialization(DataOutputStream dos, LocalDate dt) throws IOException {
