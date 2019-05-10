@@ -30,11 +30,11 @@ public class MainConcurrency {
         //Object lock=new Object();
         MainConcurrency mainConcurrency = new MainConcurrency();
         List<Thread> threads = new ArrayList<>();
+
         for (int i = 0; i < 10_000; i++) {
             Thread thread = new Thread(() -> {
                 for (int j = 0; j < 100; j++) {
                     mainConcurrency.increment();
-
                 }
             });
             thread.start();
@@ -47,7 +47,7 @@ public class MainConcurrency {
                 e.printStackTrace();
             }
         });
-        Thread.sleep(500);
+       // Thread.sleep(500);
         System.out.println(counter);
 
 
