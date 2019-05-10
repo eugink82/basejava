@@ -22,10 +22,7 @@ public class Java8Stream_HW12_2 {
 
     private static List<Integer> oddOrEven(final List<Integer> integers) {
         int sum = integers.stream().reduce((acc, y) -> acc + y).get();
-        if (sum % 2 == 0) {
-            return integers.stream().filter(x -> x % 2 != 0).collect(Collectors.toList());
-        }
-        return integers.stream().filter(x -> x % 2 == 0).collect(Collectors.toList());
+            return integers.stream().filter(x -> (sum % 2 != 0 && x % 2 == 0) || (sum % 2 == 0 && x % 2 != 0)).collect(Collectors.toList());
     }
 
     private static List<Integer> oddOrEven2(List<Integer> integers) {
