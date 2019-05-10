@@ -4,22 +4,31 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BinaryOperator;
+import java.util.stream.Collectors;
 
-public class Java8Stream_HW12_2_ver_1 {
+public class Java8Stream_HW12_2 {
     public static void main(String[] args) {
         List<Integer> list = new ArrayList<>();
         list.add(45);
-        list.add(7);
-        list.add(8);
-        list.add(12);
+        list.add(17);
         list.add(4);
+        list.add(3);
+        list.add(9);
         list = oddOrEven(list);
         for (int i : list) {
             System.out.println(i + " ");
         }
     }
 
-    private static List<Integer> oddOrEven(List<Integer> integers) {
+    private static List<Integer> oddOrEven(final List<Integer> integers) {
+        int sum = integers.stream().reduce((acc, y) -> acc + y).get();
+        if (sum % 2 == 0) {
+            return integers.stream().filter(x -> x % 2 != 0).collect(Collectors.toList());
+        }
+        return integers.stream().filter(x -> x % 2 == 0).collect(Collectors.toList());
+    }
+
+    private static List<Integer> oddOrEven2(List<Integer> integers) {
         BinaryOperator<Integer> binaryInt = new BinaryOperator<Integer>() {
             @Override
             public Integer apply(Integer sum, Integer elem) {
@@ -41,5 +50,9 @@ public class Java8Stream_HW12_2_ver_1 {
             }
         }
         return integers;
+    }
+
+    private static List<Integer> oddOrEven3(final List<Integer> integers) {
+        return integers.stream().filter(x -> ((integers.stream().reduce((acc, y) -> acc + y).get()) % 2 != 0 && x % 2 == 0) || ((integers.stream().reduce((acc, y) -> acc + y).get()) % 2 == 0 && x % 2 != 0)).collect(Collectors.toList());
     }
 }
