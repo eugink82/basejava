@@ -1,5 +1,6 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.Config;
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.ResumeTestData;
@@ -7,6 +8,7 @@ import com.urise.webapp.model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.postgresql.util.PSQLException;
 
 import java.io.File;
 import java.time.Month;
@@ -16,7 +18,8 @@ import java.util.List;
 
 public class AbstractStorageTest {
     protected Storage storage;
-    protected static final File STORAGE_DIR=new File("C:\\basejava\\storage");
+    //protected static final File STORAGE_DIR=new File("C:\\basejava\\storage");
+    protected static final File STORAGE_DIR = Config.get().getStorageDir();
 
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
@@ -28,11 +31,11 @@ public class AbstractStorageTest {
     private static final Resume RESUME3;
     private static final Resume NEW_RESUME;
 
-    static{
-          RESUME1=ResumeTestData.createAndFillResume(UUID_1,"Григорий Кислин");
-          RESUME2=ResumeTestData.createAndFillResume(UUID_2,"Сидоров Антон");
-          RESUME3=ResumeTestData.createAndFillResume(UUID_3,"Мурзабеков Руслан");
-          NEW_RESUME=ResumeTestData.createAndFillResume(NEW_UUID,"Коноплев Павел");
+    static {
+        RESUME1 = ResumeTestData.createAndFillResume(UUID_1, "Григорий Кислин");
+        RESUME2 = ResumeTestData.createAndFillResume(UUID_2, "Сидоров Антон");
+        RESUME3 = ResumeTestData.createAndFillResume(UUID_3, "Мурзабеков Руслан");
+        NEW_RESUME = ResumeTestData.createAndFillResume(NEW_UUID, "Коноплев Павел");
     }
 
     protected AbstractStorageTest(Storage storage) {
@@ -62,7 +65,7 @@ public class AbstractStorageTest {
     public void update() {
         Resume resume1 = new Resume(UUID_1, "Andrei Petrov");
         storage.update(resume1);
-        Assert.assertEquals(resume1,storage.get(UUID_1));
+        Assert.assertEquals(resume1, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)

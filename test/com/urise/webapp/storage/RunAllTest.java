@@ -18,7 +18,8 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
                 ObjectPathStorageTest.class,
                 XmlPathStorageTest.class,
                 JsonPathStorageTest.class,
-                DataPathStorageTest.class
+                DataPathStorageTest.class,
+                SqlStorageTest.class
         }
 )
 public class RunAllTest {
