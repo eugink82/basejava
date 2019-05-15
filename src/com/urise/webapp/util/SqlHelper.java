@@ -2,22 +2,14 @@ package com.urise.webapp.util;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.sql.ConnectionFactory;
-import com.urise.webapp.storage.SqlStorage;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class SqlHelper {
     public ConnectionFactory connectionFactory;
 
-    public SqlHelper(ConnectionFactory connectionFactory) {
-        this.connectionFactory = connectionFactory;
+    public SqlHelper(String dbUrl, String dbUser, String dbPassword) {
+        connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     }
-    public SqlHelper(){}
-
-
 
     public <T> T transactionExecute(ABlockOfCode<T> aBlockOfCode, String query) {
         try (Connection conn = connectionFactory.getConnection();
@@ -27,5 +19,4 @@ public class SqlHelper {
             throw new StorageException(e);
         }
     }
-
 }

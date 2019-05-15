@@ -15,13 +15,16 @@ import com.urise.webapp.util.SqlHelper;
 import org.postgresql.util.*;
 
 public class SqlStorage implements Storage {
-    private final ConnectionFactory connectionFactory;
     private final SqlHelper sqlHelper;
 
 
-    protected SqlStorage(String dbUrl, String dbUser, String dbPassword) {
-        connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-        sqlHelper = new SqlHelper(connectionFactory);
+//    protected SqlStorage(String dbUrl, String dbUser, String dbPassword) {
+//        connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+//        sqlHelper = new SqlHelper(connectionFactory);
+//    }
+
+    protected SqlStorage(SqlHelper sqlHelper) {
+        this.sqlHelper = sqlHelper;
     }
 
     @Override
