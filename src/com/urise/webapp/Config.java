@@ -3,6 +3,9 @@ package com.urise.webapp;
 import java.io.*;
 import java.util.*;
 
+import com.urise.webapp.storage.SqlStorage;
+import com.urise.webapp.storage.Storage;
+
 public class Config {
     protected static final File PROPS = new File("config\\resumes.properties");
     private static final Config INSTANCE = new Config();
@@ -11,6 +14,7 @@ public class Config {
     private File dbUrl;
     private File dbUser;
     private File dbPassword;
+    private Storage storage;
 
     public static Config get() {
         return INSTANCE;
@@ -23,6 +27,7 @@ public class Config {
             dbUrl = new File(props.getProperty("db.url"));
             dbUser = new File(props.getProperty("db.user"));
             dbPassword = new File(props.getProperty("db.password"));
+            storage=new SqlStorage(props.getProperty("db.url"),props.getProperty("db.user"),props.getProperty("db.password"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -45,5 +50,9 @@ public class Config {
 
     public File getDbPassword() {
         return dbPassword;
+    }
+
+    public Storage getStorage() {
+        return storage;
     }
 }

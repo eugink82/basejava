@@ -18,13 +18,8 @@ public class SqlStorage implements Storage {
     private final SqlHelper sqlHelper;
 
 
-//    protected SqlStorage(String dbUrl, String dbUser, String dbPassword) {
-//        connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-//        sqlHelper = new SqlHelper(connectionFactory);
-//    }
-
-    protected SqlStorage(SqlHelper sqlHelper) {
-        this.sqlHelper = sqlHelper;
+    public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
+        sqlHelper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
 
     @Override
@@ -56,13 +51,14 @@ public class SqlStorage implements Storage {
     public void save(Resume resume) {
         String sqlQuery = "INSERT INTO resume(uuid,full_name) VALUES(?,?)";
         sqlHelper.transactionExecute((ABlockOfCode<Void>) ps -> {
-            try {
+          try {
                 ps.setString(1, resume.getUuid());
                 ps.setString(2, resume.getFullName());
                 ps.execute();
-            } catch (PSQLException e) {
-                throw new ExistStorageException(resume.getUuid());
-            }
+              } catch (PSQLException e) {
+                 if(e.getSQLState().equals("23505"))
+                      throw new ExistStorageException(resume.getUuid());
+             }
             return null;
         }, sqlQuery);
     }

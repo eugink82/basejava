@@ -7,8 +7,8 @@ import java.sql.*;
 public class SqlHelper {
     public ConnectionFactory connectionFactory;
 
-    public SqlHelper(String dbUrl, String dbUser, String dbPassword) {
-        connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+    public SqlHelper(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
     }
 
     public <T> T transactionExecute(ABlockOfCode<T> aBlockOfCode, String query) {

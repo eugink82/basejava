@@ -8,10 +8,8 @@ import com.urise.webapp.model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.postgresql.util.PSQLException;
 
 import java.io.File;
-import java.time.Month;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -82,7 +80,7 @@ public class AbstractStorageTest {
 
     @Test(expected = ExistStorageException.class)
     public void saveExist() {
-        storage.save(RESUME1);
+            storage.save(RESUME1);
     }
 
 
