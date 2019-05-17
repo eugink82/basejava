@@ -13,16 +13,17 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class AbstractStorageTest {
     protected Storage storage;
     //protected static final File STORAGE_DIR=new File("C:\\basejava\\storage");
     protected static final File STORAGE_DIR = Config.get().getStorageDir();
 
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
-    private static final String NEW_UUID = "new_uuid";
+    private static final String UUID_1 = UUID.randomUUID().toString(); //"uuid1";
+    private static final String UUID_2 = UUID.randomUUID().toString();//"uuid2";
+    private static final String UUID_3 = UUID.randomUUID().toString();//"uuid3";
+    private static final String NEW_UUID =UUID.randomUUID().toString(); //"new_uuid";
 
     private static final Resume RESUME1;
     private static final Resume RESUME2;

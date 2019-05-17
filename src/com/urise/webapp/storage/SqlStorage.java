@@ -1,18 +1,13 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
-import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.sql.ConnectionFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.urise.webapp.util.ABlockOfCode;
-import com.urise.webapp.util.SqlHelper;
-import org.postgresql.util.*;
+import com.urise.webapp.sql.SqlHelper;
 
 public class SqlStorage implements Storage {
     private final SqlHelper sqlHelper;
@@ -25,7 +20,7 @@ public class SqlStorage implements Storage {
     @Override
     public void clear() {
         String sqlQuery = "DELETE FROM resume";
-        sqlHelper.transactionExecute((ABlockOfCode<Void>) ps -> {
+        sqlHelper.transactionExecute(ps -> {
             ps.execute();
             return null;
         }, sqlQuery);
@@ -35,7 +30,7 @@ public class SqlStorage implements Storage {
     @Override
     public void update(Resume resume) {
         String sqlQuery = "UPDATE resume r SET full_name=? WHERE r.uuid=?";
-        sqlHelper.transactionExecute((ABlockOfCode<Void>) ps -> {
+        sqlHelper.transactionExecute(ps -> {
             ps.setString(1, resume.getFullName());
             ps.setString(2, resume.getUuid());
             int count = ps.executeUpdate();
@@ -50,15 +45,10 @@ public class SqlStorage implements Storage {
     @Override
     public void save(Resume resume) {
         String sqlQuery = "INSERT INTO resume(uuid,full_name) VALUES(?,?)";
-        sqlHelper.transactionExecute((ABlockOfCode<Void>) ps -> {
-          try {
+        sqlHelper.transactionExecute(ps -> {
                 ps.setString(1, resume.getUuid());
                 ps.setString(2, resume.getFullName());
                 ps.execute();
-              } catch (PSQLException e) {
-                 if(e.getSQLState().equals("23505"))
-                      throw new ExistStorageException(resume.getUuid());
-             }
             return null;
         }, sqlQuery);
     }
@@ -79,7 +69,7 @@ public class SqlStorage implements Storage {
     @Override
     public void delete(String uuid) {
         String sqlQuery = "DELETE FROM resume r WHERE r.uuid=?";
-        sqlHelper.transactionExecute((ABlockOfCode<Void>) ps -> {
+        sqlHelper.transactionExecute(ps -> {
             ps.setString(1, uuid);
             int count = ps.executeUpdate();
             if (count == 0) {
@@ -96,7 +86,7 @@ public class SqlStorage implements Storage {
             ResultSet rs = ps.executeQuery();
             List<Resume> list = new ArrayList<>();
             while (rs.next()) {
-                list.add(new Resume(rs.getString(1).trim(), rs.getString(2)));
+                list.add(new Resume(rs.getString(1), rs.getString(2)));
             }
             return list;
         }, sqlQuery);

@@ -7,14 +7,13 @@ import com.urise.webapp.storage.SqlStorage;
 import com.urise.webapp.storage.Storage;
 
 public class Config {
-    protected static final File PROPS = new File("config\\resumes.properties");
+    private static final File PROPS = new File("config\\resumes.properties");
     private static final Config INSTANCE = new Config();
-    private Properties props = new Properties();
-    private File storageDir;
-    private File dbUrl;
-    private File dbUser;
-    private File dbPassword;
-    private Storage storage;
+    private final File storageDir;
+    private final File dbUrl;
+    private final File dbUser;
+    private final File dbPassword;
+    private final Storage storage;
 
     public static Config get() {
         return INSTANCE;
@@ -22,15 +21,15 @@ public class Config {
 
     private Config() {
         try (InputStream is = new FileInputStream(PROPS)) {
+            Properties props = new Properties();
             props.load(is);
             storageDir = new File(props.getProperty("storage.dir"));
             dbUrl = new File(props.getProperty("db.url"));
             dbUser = new File(props.getProperty("db.user"));
             dbPassword = new File(props.getProperty("db.password"));
             storage=new SqlStorage(props.getProperty("db.url"),props.getProperty("db.user"),props.getProperty("db.password"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new IllegalArgumentException("Некорректный конфигурационный файл " + PROPS.getAbsolutePath());
         }
 
