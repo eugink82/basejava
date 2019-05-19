@@ -8,13 +8,13 @@ import java.time.Month;
 public class ResumeTestData {
     public static Resume createAndFillResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
-//        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
-//        resume.addContact(ContactType.SKYPE, "grigory.kislin");
-//        resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
-//        resume.addContact(ContactType.LINKEDIN, "Профиль LinkedIn");
-//        resume.addContact(ContactType.GITHUB, "Профиль GitHub");
-//        resume.addContact(ContactType.STACKOVERFLOW, "Профиль Stackoverflow");
-//        resume.addContact(ContactType.HOMEPAGE, "Домашняя страница");
+        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
+        resume.addContact(ContactType.SKYPE, "grigory.kislin");
+        resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
+        resume.addContact(ContactType.LINKEDIN, "Профиль LinkedIn");
+        resume.addContact(ContactType.GITHUB, "Профиль GitHub");
+        resume.addContact(ContactType.STACKOVERFLOW, "Профиль Stackoverflow");
+        resume.addContact(ContactType.HOMEPAGE, "Домашняя страница");
 //        resume.addSection(SectionType.OBJECTIVE, new SimpleTextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 //        resume.addSection(SectionType.PERSONAL, new SimpleTextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
 //        resume.addSection(SectionType.ACHIEVEMENT,

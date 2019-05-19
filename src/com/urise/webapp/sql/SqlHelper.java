@@ -13,15 +13,35 @@ public class SqlHelper {
         this.connectionFactory = connectionFactory;
     }
 
-    public <T> T transactionExecute(SqlExecutor<T> sqlExecutor, String query) {
+    public void execute(String query) {
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.execute();
+        } catch (SQLException e) {
+            throw new StorageException(e);
+        }
+    }
+
+    public <T> T execute(String query, SqlExecutor<T> sqlExecutor) {
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             return sqlExecutor.exec(ps);
-        } catch (PSQLException e) {
-            if (e.getSQLState().equals("23505")) {
-                throw new ExistStorageException(null);
+        } catch (SQLException e) {
+            throw ExceptionUtil.convertException(e);
+        }
+    }
+
+    public <T> T transactionalExecute(SqlTransaction<T> transactExecutor) {
+        try (Connection conn = connectionFactory.getConnection()) {
+            try {
+                conn.setAutoCommit(false);
+                T res = transactExecutor.exec(conn);
+                conn.commit();
+                return res;
+            } catch (SQLException e) {
+                conn.rollback();
+                throw ExceptionUtil.convertException(e);
             }
-            throw new StorageException(e);
         } catch (SQLException e) {
             throw new StorageException(e);
         }

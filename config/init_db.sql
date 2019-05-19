@@ -6,16 +6,12 @@ create table resume
   full_name text     not null
 );
 
-create table contact
+CREATE TABLE contact
 (
-  id          serial,
-  resume_uuid char(36) not null
-    constraint contact_resume_uuid_fk
-      references resume
-      on update restrict on delete cascade,
-  type        text     not null,
-  value       text     not null
-
+  id          SERIAL,
+  resume_uuid CHAR(36) NOT NULL REFERENCES resume (uuid) ON DELETE CASCADE,
+  type        TEXT     NOT NULL,
+  value       TEXT     NOT NULL
 );
 
 create unique index contact_uuid_type_index
