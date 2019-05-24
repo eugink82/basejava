@@ -98,20 +98,18 @@ public class SqlStorage implements Storage {
                 "ORDER BY full_name,uuid";
         return sqlHelper.execute(sqlQuery, ps -> {
             ResultSet rs = ps.executeQuery();
-            Set<String> set = new LinkedHashSet<>();
-            List<Resume> resumes = new ArrayList<>();
-            Resume resume = null;
-            while (rs.next()) {
-                String uuid = rs.getString("uuid");
-                if (resume == null || !set.contains(uuid)) {
+            Map<String, Resume> map=new LinkedHashMap<>();
+            Resume resume=null;
+            while(rs.next()){
+                String uuid=rs.getString("uuid");
+                resume=map.get(uuid);
+                if(resume==null){
                     resume = new Resume(uuid, rs.getString("full_name"));
-                    set.add(uuid);
-                    resumes.add(resume);
+                    map.put(uuid,resume);
                 }
-                addContact(resume, rs);
-
+                addContact(resume,rs);
             }
-            return new ArrayList<>(resumes);
+            return new ArrayList<>(map.values());
         });
     }
 
