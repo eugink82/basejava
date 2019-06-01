@@ -10,6 +10,12 @@ public class SqlHelper {
     public ConnectionFactory connectionFactory;
 
     public SqlHelper(ConnectionFactory connectionFactory) {
+        try {
+            Class.forName("org.postgresql.Driver");
+        }
+        catch(ClassNotFoundException e){
+            System.out.println("Драйвер postgresql не найден");
+        }
         this.connectionFactory = connectionFactory;
     }
 
