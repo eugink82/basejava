@@ -14,8 +14,20 @@ CREATE TABLE contact
   value       TEXT     NOT NULL
 );
 
+CREATE TABLE section
+(
+  id          SERIAL,
+  resume_uuid CHAR(36) NOT NULL REFERENCES resume (uuid) ON DELETE CASCADE,
+  type        TEXT     NOT NULL,
+  content     TEXT     NOT NULL
+);
+
+
 create unique index contact_uuid_type_index
   on contact (resume_uuid, type);
+
+create unique index section_uuid_type_index
+  on section (resume_uuid, type);
 
 
 

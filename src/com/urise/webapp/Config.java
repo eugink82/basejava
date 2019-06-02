@@ -7,7 +7,9 @@ import com.urise.webapp.storage.SqlStorage;
 import com.urise.webapp.storage.Storage;
 
 public class Config {
-    private static final File PROPS = new File("config\\resumes.properties");
+    //private static final File PROPS = new File("config\\resumes.properties");
+    private static final File PROPS = new File("C:\\basejava\\config\\resumes.properties");
+
     private static final Config INSTANCE = new Config();
     private final File storageDir;
     private final File dbUrl;
