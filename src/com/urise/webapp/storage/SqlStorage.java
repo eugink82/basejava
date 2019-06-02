@@ -92,13 +92,12 @@ public class SqlStorage implements Storage {
 
     @Override
     public void delete(String uuid) {
-        sqlHelper.transactionalExecute(conn -> {
-            try (PreparedStatement ps = conn.prepareStatement("DELETE FROM resume r WHERE r.uuid=?")) {
-                ps.setString(1, uuid);
-                int count = ps.executeUpdate();
-                if (count == 0) {
-                    throw new NotExistStorageException(uuid);
-                }
+        String sqlDeleteQuery="DELETE FROM resume r WHERE r.uuid=?";
+        sqlHelper.execute(sqlDeleteQuery,ps -> {
+            ps.setString(1,uuid);
+            int count = ps.executeUpdate();
+            if (count == 0) {
+                throw new NotExistStorageException(uuid);
             }
             return null;
         });
@@ -185,7 +184,6 @@ public class SqlStorage implements Storage {
                     case "OBJECTIVE":
                     case "PERSONAL": {
                         ps.setString(3, section.getValue().toString());
-                        ps.addBatch();
                     }
                     break;
                     case "ACHIEVEMENT":
@@ -193,9 +191,9 @@ public class SqlStorage implements Storage {
                         List<String> content = ((ListSection) section.getValue()).getList();
                         String joinedContent = String.join("\n", content);
                         ps.setString(3, joinedContent);
-                        ps.addBatch();
                     }
                 }
+                ps.addBatch();
             }
             ps.executeBatch();
         }

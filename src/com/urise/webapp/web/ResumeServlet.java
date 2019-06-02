@@ -29,9 +29,6 @@ public class ResumeServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Content-type", "text/html;charset=UTF-8");
-        String name = request.getParameter("name");
-        //response.getWriter().write(name==null ? "Hello resumes!" : "Hello "+name+"!");
-
 
         List<Resume> resumes = sqlStorage.getAllSorted();
         PrintWriter pw = null;
