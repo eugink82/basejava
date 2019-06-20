@@ -40,6 +40,10 @@ public class Resume implements Comparable<Resume>, Serializable {
         return fullName;
     }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public Map<ContactType, String> getContacts() {
         return contacts;
     }
@@ -90,5 +94,4 @@ public class Resume implements Comparable<Resume>, Serializable {
         int resultCompare = fullName.compareTo(o.getFullName());
         return resultCompare != 0 ? resultCompare : uuid.compareTo(o.getUuid());
     }
-
 }
