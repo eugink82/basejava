@@ -16,7 +16,7 @@ public class ResumeTestDataTemp {
         //  r.printContacts();
         r.contacts.put(ContactType.SKYPE, "grigory.kislin");
         r.contacts.put(ContactType.EMAIL, "gkislin@yandex.ru");
-        r.contacts.put(ContactType.PROFILE, "https://github.com/gkislin");
+        r.contacts.put(ContactType.GITHUB, "https://github.com/gkislin");
         r.contacts.put(ContactType.PHONE, "http://gkislin.ru/");
 
         SimpleTextSection simple1 = new SimpleTextSection("Ведущий стажировок и корпоративного обучения " +

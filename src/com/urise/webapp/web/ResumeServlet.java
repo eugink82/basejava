@@ -3,6 +3,8 @@ package com.urise.webapp.web;
 import com.urise.webapp.Config;
 import com.urise.webapp.model.ContactType;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.SectionType;
+import com.urise.webapp.model.SimpleTextSection;
 import com.urise.webapp.storage.SqlStorage;
 import com.urise.webapp.storage.Storage;
 
@@ -35,6 +37,19 @@ public class ResumeServlet extends HttpServlet {
             }
             else{
                 r.getContacts().remove(type);
+            }
+        }
+        for(SectionType type: SectionType.values()){
+            String value=request.getParameter(type.name());
+            if(value!=null && value.trim().length()!=0){
+                switch(type){
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        r.addSection(type,new SimpleTextSection(value));
+                }
+            }
+            else{
+                r.getSections().remove(type);
             }
         }
         storage.update(r);

@@ -52,4 +52,11 @@ public class Link implements Serializable {
         result = 31 * result + (url != null ? url.hashCode() : 0);
         return result;
     }
+
+//    public String toLink(String href, String title) {
+//        return "<a href='" + href + "'>" + title + "</a>";
+//    }
+    public boolean urlIsExists(){
+        return url!=null;
+    }
 }
