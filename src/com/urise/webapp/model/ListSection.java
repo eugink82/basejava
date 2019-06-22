@@ -27,10 +27,7 @@ public class ListSection extends Sections {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (String section : items)
-            sb.append("-").append(section).append(System.lineSeparator());
-        return sb.toString();
+        return items.toString();
     }
 
     @Override
