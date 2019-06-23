@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Company implements Serializable {
     private static final long serialVersionUID = 1L;
+    public final static Company EMPTY = new Company("", "", Position.EMPTY);
 
     private Link homepage;
     private List<Position> positions = new ArrayList<>();
@@ -71,6 +72,7 @@ public class Company implements Serializable {
         private LocalDate startDate;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate endDate;
+        public static final Position EMPTY = new Position();
 
         public Position() {
         }

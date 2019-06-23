@@ -5,6 +5,7 @@
 <%@ page import="com.urise.webapp.model.SimpleTextSection" %>
 <%@ page import="com.urise.webapp.model.ListSection" %>
 <%@ page import="com.urise.webapp.model.CompanySection" %>
+<%@ page import="com.urise.webapp.util.DateUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -36,18 +37,16 @@
         <c:forEach var="sectionType" items="<%=SectionType.values()%>">
             <c:set var="section" value="${resume.getSection(sectionType)}"/>
             <jsp:useBean id="section" type="com.urise.webapp.model.Sections"/>
+            <h3>${sectionType.title}</h3>
             <c:choose>
                 <c:when test="${sectionType=='OBJECTIVE' || sectionType=='PERSONAL'}">
-                    <h3>${sectionType.title}</h3>
-                    <dd><input type="text" name="${sectionType}" size="140" value="${section}"></dd>
+                    <input type="text" name="${sectionType}" size="140" value="${section}">
                 </c:when>
                 <c:when test="${sectionType=='ACHIEVEMENT' || sectionType=='QUALIFICATIONS'}">
-                    <h3>${sectionType.title}</h3>
                     <textarea rows="15" cols="180"
-                              name="${sectionType}">$<%=String.join("\n", ((ListSection) section).getList())%></textarea>
+                              name="${sectionType}"><%=String.join("\n", ((ListSection) section).getList())%></textarea>
                 </c:when>
                 <c:when test="${sectionType=='EXPERIENCE' || sectionType=='EDUCATION'}">
-                    <h3>${sectionType.title}</h3>
                     <c:forEach var="company" items="<%=((CompanySection)section).getCompanies()%>" varStatus="count">
                         <p>
                         <fieldset>
@@ -66,9 +65,9 @@
                                 <dl>
                                     <dt>Период ${sectionType=='EXPERIENCE' ? 'работы:':'обучения:'}</dt>
                                     <dd><input type="date" name="${sectionType}${count.index}startDate"
-                                               value="${pos.startDate}" size="70"></dd>
+                                               value="<%=DateUtil.format(pos.getStartDate())%>" size="70"></dd>
                                     <dd><input type="date" name="${sectionType}${count.index}endDate"
-                                               value="${pos.endDate}" size="70"></dd>
+                                               value="<%=DateUtil.format(pos.getEndDate())%>" size="70"></dd>
                                 </dl>
                                 <dl>
                                     <dt>${sectionType=='EXPERIENCE' ? 'Должность:':'Курс:'}</dt>

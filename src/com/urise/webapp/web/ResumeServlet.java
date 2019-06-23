@@ -4,6 +4,7 @@ import com.urise.webapp.Config;
 import com.urise.webapp.model.*;
 import com.urise.webapp.storage.Storage;
 import com.urise.webapp.util.DateUtil;
+import com.urise.webapp.util.HtmlUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,20 +26,25 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        Resume r = storage.get(uuid);
-        r.setFullName(fullName);
+        Resume r;
+        if (uuid == null || uuid.length() == 0) {
+            r = new Resume(fullName);
+        } else {
+            r = storage.get(uuid);
+            r.setFullName(fullName);
+        }
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
-            if (value != null && value.trim().length() != 0) {
-                r.addContact(type, value);
-            } else {
+            if (HtmlUtil.isEmpty(value)) {
                 r.getContacts().remove(type);
+            } else {
+                r.addContact(type, value);
             }
         }
         for (SectionType type : SectionType.values()) {
             String value = request.getParameter(type.name());
             String[] values = request.getParameterValues(type.name());
-            if ((value == null && value.trim().length() == 0) && values.length < 2) {
+            if (HtmlUtil.isEmpty(value) && values.length < 2) {
                 r.getSections().remove(type);
             } else {
                 switch (type) {
@@ -48,35 +54,43 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        String[] stringsList = value.split("\\n");
-                        r.addSection(type, new ListSection(stringsList));
+                        r.addSection(type, new ListSection(value.split("\\n")));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
                         List<Company> company = new ArrayList<>();
-                        String homepage = request.getParameter(type.name() + "link");
+                        String homepage[] = request.getParameterValues(type.name() + "link");
                         for (int i = 0; i < values.length; i++) {
                             String name = values[i];
-                            List<Company.Position> positions = new ArrayList<>();
-                            if (name != null && name.trim().length() != 0) {
+
+                            if (!HtmlUtil.isEmpty(name)) {
+                                List<Company.Position> positions = new ArrayList<>();
                                 String[] titles = request.getParameterValues(type.name() + i + "position");
                                 String[] descriptions = request.getParameterValues(type.name() + i + "description");
                                 String[] startDates = request.getParameterValues(type.name() + i + "startDate");
                                 String[] endDates = request.getParameterValues(type.name() + i + "endDate");
                                 for (int j = 0; j < titles.length; j++) {
-                                    positions.add(new Company.Position(titles[j], descriptions[j],
-                                            DateUtil.parseToLocalDate(startDates[j]), DateUtil.parseToLocalDate(startDates[j])));
+                                    if (!HtmlUtil.isEmpty(titles[j])) {
+                                        positions.add(new Company.Position(titles[j], descriptions[j],
+                                                DateUtil.parseToLocalDate(startDates[j]), DateUtil.parseToLocalDate(endDates[j])));
+                                    }
                                 }
+                                company.add(new Company(new Link(name, homepage[i]), positions));
                             }
-                            company.add(new Company(new Link(name, homepage), positions));
+
                         }
                         r.addSection(type, new CompanySection(company));
                         break;
-                }
 
+                }
             }
+
         }
-        storage.update(r);
+        if (uuid == null || uuid.length() == 0) {
+            storage.save(r);
+        } else {
+            storage.update(r);
+        }
         response.sendRedirect("resume");
     }
 
@@ -94,9 +108,47 @@ public class ResumeServlet extends HttpServlet {
                 storage.delete(uuid);
                 response.sendRedirect("resume");
                 return;
+            case "add":
+                r = Resume.EMPTY;
+                break;
             case "view":
+                r = storage.get(uuid);
+                break;
             case "edit":
                 r = storage.get(uuid);
+                for (SectionType type : SectionType.values()) {
+                    Sections section = r.getSection(type);
+                    switch (type) {
+                        case OBJECTIVE:
+                        case PERSONAL:
+                            if (section == null) {
+                                section = SimpleTextSection.EMPTY;
+                            }
+                            break;
+                        case ACHIEVEMENT:
+                        case QUALIFICATIONS:
+                            if (section == null) {
+                                section = ListSection.EMPTY;
+                            }
+                            break;
+                        case EXPERIENCE:
+                        case EDUCATION:
+                            CompanySection companySection = (CompanySection) section;
+                            List<Company> companies = new ArrayList<>();
+                            companies.add(Company.EMPTY);
+                            if (section != null) {
+                                for (Company company : companySection.getCompanies()) {
+                                    List<Company.Position> positions = new ArrayList<>();
+                                    positions.add(Company.Position.EMPTY);
+                                    positions.addAll(company.getPositions());
+                                    companies.add(new Company(company.getHomepage(), positions));
+                                }
+                            }
+                            section = new CompanySection(companies);
+                            break;
+                    }
+                    r.addSection(type, section);
+                }
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");

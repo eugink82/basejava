@@ -33,3 +33,11 @@ dd {
 .org {
     margin:10px;
 }
+
+h3 {
+    margin: 20px 0 5px;
+}
+
+.td_pos{
+    font-weight: bold;
+}

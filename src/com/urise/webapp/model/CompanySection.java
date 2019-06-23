@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class CompanySection extends Sections {
     private static final long serialVersionUID = 1L;
+    public static CompanySection EMPTY = new CompanySection(Company.EMPTY);
 
     private List<Company> companies;
 

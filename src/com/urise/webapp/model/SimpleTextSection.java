@@ -4,6 +4,7 @@ import java.util.*;
 
 public class SimpleTextSection extends Sections {
     private static final long serialVersionUID = 1L;
+    public static SimpleTextSection EMPTY = new SimpleTextSection("");
 
     private String content;
 
