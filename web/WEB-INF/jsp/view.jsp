@@ -1,5 +1,6 @@
 <%@ page import="com.urise.webapp.model.ListSection" %>
 <%@ page import="com.urise.webapp.model.CompanySection" %>
+<%@ page import="com.urise.webapp.util.DateUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -49,11 +50,12 @@
                     <p>${company.homepage.name}</p>
                 </c:if>
                 <c:forEach var="pos" items="${company.positions}">
+                    <jsp:useBean id="pos" type="com.urise.webapp.model.Company.Position"/>
                     <table width="100%">
                         <tr>
                             <td rowspan="2" width="15%"
-                                style="padding: 5px; vertical-align: top;">${pos.startDate.month.value}/${pos.startDate.year}/
-                                - ${pos.endDate.month.value}/${pos.endDate.year}</td>
+                                style="padding: 5px; vertical-align: top;"><%=DateUtil.format(pos.getStartDate())%> - <%=DateUtil.format(pos.getEndDate())%>
+                            </td>
                             <td><b>${pos.title}</b></td>
                         </tr>
                         <tr>

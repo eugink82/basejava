@@ -1,8 +1,5 @@
-<%@ page import="com.urise.webapp.model.Resume" %>
-<%@ page import="java.util.List" %>
 <%@ page import="com.urise.webapp.model.ContactType" %>
 <%@ page import="com.urise.webapp.model.SectionType" %>
-<%@ page import="com.urise.webapp.model.SimpleTextSection" %>
 <%@ page import="com.urise.webapp.model.ListSection" %>
 <%@ page import="com.urise.webapp.model.CompanySection" %>
 <%@ page import="com.urise.webapp.util.DateUtil" %>
@@ -62,12 +59,20 @@
                             </dl>
                             <c:forEach var="pos" items="${company.positions}">
                                 <jsp:useBean id="pos" type="com.urise.webapp.model.Company.Position"/>
+                                <c:set var="patternStartDate"
+                                       value="(0?[1-9]|1[0-2])\/(1{1}9[0-9]{2}|2{1}0[0-1]{1}[0-9]{1})"/>
+                                <c:set var="patternEndDate" value="${patternStartDate}|(Сейчас)"/>
+                                <c:set var="hintDate" value="Введите дату в диапазоне (01/1900)-(12/2019)"/>
                                 <dl>
                                     <dt>Период ${sectionType=='EXPERIENCE' ? 'работы:':'обучения:'}</dt>
-                                    <dd><input type="date" name="${sectionType}${count.index}startDate"
-                                               value="<%=DateUtil.format(pos.getStartDate())%>" size="70"></dd>
-                                    <dd><input type="date" name="${sectionType}${count.index}endDate"
-                                               value="<%=DateUtil.format(pos.getEndDate())%>" size="70"></dd>
+                                    <dd><input type="text" name="${sectionType}${count.index}startDate"
+                                               value="<%=DateUtil.format(pos.getStartDate())%>" size="10"
+                                               placeholder="MM/yyyy"
+                                               pattern="${patternStartDate}" title="${hintDate}"></dd>
+                                    <dd><input type="text" name="${sectionType}${count.index}endDate"
+                                               value="<%=DateUtil.format(pos.getEndDate())%>" size="10"
+                                               placeholder="MM/yyyy"
+                                               pattern="${patternEndDate}" title="${hintDate}"></dd>
                                 </dl>
                                 <dl>
                                     <dt>${sectionType=='EXPERIENCE' ? 'Должность:':'Курс:'}</dt>

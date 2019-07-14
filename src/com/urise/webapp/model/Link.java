@@ -53,10 +53,10 @@ public class Link implements Serializable {
         return result;
     }
 
-//    public String toLink(String href, String title) {
+    //    public String toLink(String href, String title) {
 //        return "<a href='" + href + "'>" + title + "</a>";
 //    }
-    public boolean urlIsExists(){
-        return url!=null;
+    public boolean urlIsExists() {
+        return !"".equals(url);
     }
 }

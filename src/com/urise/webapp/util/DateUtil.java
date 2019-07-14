@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 public class DateUtil {
     public static final LocalDate NOW = LocalDate.of(3000, 1, 1);
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
 
     public static LocalDate of(int year, Month month) {
         return LocalDate.of(year, month, 1);
@@ -18,6 +18,7 @@ public class DateUtil {
 
     public static LocalDate parseToLocalDate(String date) {
         if (date == null || date.trim().length() == 0 || "Сейчас".equals(date)) return NOW;
-        return LocalDate.parse(date, formatter);
+        YearMonth yearMonth = YearMonth.parse(date, formatter);
+        return LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
     }
 }
